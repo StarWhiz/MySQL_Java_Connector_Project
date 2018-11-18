@@ -18,7 +18,7 @@ public class App {
                     .getConnection("jdbc:mysql://localhost:3306/OnlineStore?useLegacyDatetimeCode=false" +
                                     "&serverTimezone" +
                                     "=America/Los_Angeles"
-                            ,"root", "redman1997");
+                            ,"root", "YOUR_PASSWORD");
 
             // Execute a query
             System.out.println("Creating a statement...");
