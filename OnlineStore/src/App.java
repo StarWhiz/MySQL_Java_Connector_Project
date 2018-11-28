@@ -56,12 +56,10 @@ public class App {
                                     "WHERE  items.itemid = reviews.itemid \n" +
                                     "GROUP  BY items.itemid \n" +
                                     "ORDER  BY avgrating DESC \n" +
-                                    "LIMIT  20;");
-                            System.out.format("%-15s%-30s%-15s\n", "Customer ID", "Customer name", "Total spent");
+                                    "LIMIT  5;");
+                            System.out.format("%-15s\n", "Items");
                             while(rs.next()) {
-                                System.out.format("%-15s%-30s%-15s\n", rs.getInt("customerid"),
-                                        rs.getString("customername"),
-                                        rs.getString("totalPrice"));
+                                System.out.format("%-15s\n", rs.getString("itemname"));
                             }
                             System.out.println("\n\n");
                             break;
