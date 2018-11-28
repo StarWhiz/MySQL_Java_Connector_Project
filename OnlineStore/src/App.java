@@ -32,7 +32,7 @@ public class App {
                     .getConnection("jdbc:mysql://localhost:3306/STORE?useLegacyDatetimeCode=false" +
                                     "&serverTimezone" +
                                     "=America/Los_Angeles"
-                            ,"root", "YOUR_PASSWORD");
+                            ,"root", "tam2212");
 
             // Execute a query
             // System.out.println("Creating a statement...");
