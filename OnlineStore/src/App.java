@@ -29,10 +29,11 @@ public class App {
             // Open a connection
             //System.out.println("Connecting to database...");
             connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3306/STORE?useLegacyDatetimeCode=false" +
+                    .getConnection("jdbc:mysql://rds-mysql-onlinestore.c3pd0vboyy5j.us-west-1.rds.amazonaws.com/STORE?useLegacyDatetimeCode=false" +
                                     "&serverTimezone" +
                                     "=America/Los_Angeles"
-                            ,"root", "tam2212");
+
+                            ,"root", "cs157arit");
 
             // Execute a query
             // System.out.println("Creating a statement...");
