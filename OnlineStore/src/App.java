@@ -5,6 +5,7 @@ import java.util.Scanner;
  * https://www.youtube.com/watch?v=NoPzqahrzp8
  */
 public class App {
+
     public static void main(String[] args) {
         //System.out.println("MySQL JDBC Driver Registered!");
         Connection connection = null;
@@ -29,10 +30,8 @@ public class App {
             // Open a connection
             //System.out.println("Connecting to database...");
             connection = DriverManager
-                    .getConnection("jdbc:mysql://rds-mysql-onlinestore.c3pd0vboyy5j.us-west-1.rds.amazonaws.com/STORE?useLegacyDatetimeCode=false" +
-                                    "&serverTimezone" +
-                                    "=America/Los_Angeles"
-
+                    .getConnection("jdbc:mysql://rds-mysql-onlinestore.c3pd0vboyy5j.us-west-1.rds.amazonaws.com:3306"
+                                    + "/STORE"
                             ,"root", "cs157arit");
 
             // Execute a query
