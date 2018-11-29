@@ -5,6 +5,7 @@ import java.util.Scanner;
  * https://www.youtube.com/watch?v=NoPzqahrzp8
  */
 public class App {
+
     public static void main(String[] args) {
         //System.out.println("MySQL JDBC Driver Registered!");
         Connection connection = null;
@@ -29,10 +30,9 @@ public class App {
             // Open a connection
             //System.out.println("Connecting to database...");
             connection = DriverManager
-                    .getConnection("jdbc:mysql://localhost:3306/STORE?useLegacyDatetimeCode=false" +
-                                    "&serverTimezone" +
-                                    "=America/Los_Angeles"
-                            ,"root", "YOUR_PASSWORD");
+                    .getConnection("jdbc:mysql://rds-mysql-onlinestore.c3pd0vboyy5j.us-west-1.rds.amazonaws.com:3306"
+                                    + "/STORE"
+                            ,"root", "cs157arit");
 
             // Execute a query
             // System.out.println("Creating a statement...");
@@ -56,12 +56,10 @@ public class App {
                                     "WHERE  items.itemid = reviews.itemid \n" +
                                     "GROUP  BY items.itemid \n" +
                                     "ORDER  BY avgrating DESC \n" +
-                                    "LIMIT  20;");
-                            System.out.format("%-15s%-30s%-15s\n", "Customer ID", "Customer name", "Total spent");
+                                    "LIMIT  5;");
+                            System.out.format("%-15s\n", "Items");
                             while(rs.next()) {
-                                System.out.format("%-15s%-30s%-15s\n", rs.getInt("customerid"),
-                                        rs.getString("customername"),
-                                        rs.getString("totalPrice"));
+                                System.out.format("%-15s\n", rs.getString("itemname"));
                             }
                             System.out.println("\n\n");
                             break;
