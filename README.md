@@ -12,7 +12,13 @@ To Add JDBC Driver in IntelliJ
 
 How to setup using Eclipse
 
-To Add JDBC Driver in Eclipse
+I. Importing to Eclipse
+
+1. File -> Import... -> General -> Existing Projects Into Workspace... -> Select root directory
+-> Browse... -> "Locationofthisgithubdirectory\cs157a\OnlineStore" -> Finish
+2. It's important to choose "Online Store" which is inside cs157a. Don't import "cs157a"
+
+II. To Add JDBC Driver in Eclipse (This step is not necssary if import is done correctly!)
 
 1. Right-click on Project "OnlineStore"
 2. Click Properties
