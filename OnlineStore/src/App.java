@@ -18,12 +18,11 @@ public class App {
                             , "root", "cs157arit");
             stmt = connection.createStatement();
 
-            printMainMenu(stmt); /***** Print's the menu options. Functional Requirements are done here.*****/
+            printMainMenu(stmt); /* Print's the menu options. Functional Requirements are done here. */
 
         } catch (SQLException e) {
             System.out.println("Connection Failed! Check output console");
             e.printStackTrace();
-            return;
         } finally {
             //finally block used to close resources
             try {
@@ -77,10 +76,11 @@ public class App {
         while (!exitRequested) {
             System.out.println("You are a customer.\n");
             System.out.println("What would you like to do today?\n"
-                    + "   1. Show top rated items. \n" // #10
-                    + "   2. \n"  // TODO
-                    + "   3. \n"  // TODO
-                    + "   4. Logout (customer logout)\n");
+                    + "   1. View top 5 rated items. \n" //
+                    + "   2. View all available and unavailable items\n"
+                    + "   3. View top 5 best selling items\n"
+                    + "   4. View my purchase history\n"
+                    + "   5. Logout (customer logout)\n");
             int customerOption = in.nextInt();
 
             switch (customerOption) {
@@ -88,12 +88,14 @@ public class App {
                     functionRequirement10(stmt);
                     break;
                 case 2:
-                    //TODO
+                    functionRequirement11(stmt);
                     break;
                 case 3:
-                    //TODO
+                    functionRequirement14(stmt);
                     break;
                 case 4:
+                    functionRequirement17(stmt);
+                case 5:
                     exitRequested = true;
                     break;
             }
@@ -110,15 +112,22 @@ public class App {
         while (!exitRequested) {
             System.out.println("You are a business owner.\n");
             System.out.println("What would you like to do today?\n"
-                    + "   1. Show top 5 customers\n" // #1
-                    + "   2. Show the total revenue of high-value items sold (items that are priced " +
-                    "over $50)\n" // #2
-                    + "   3. Show how much $ was lost due per items\n" // #4
-                    //TODO Add more menu items
-                    + "   4. Exit\n");
-            int besinessOwnerOption = in.nextInt();
+                    + "   1. Show top 5 customers\n"
+                    + "   2. Show the total revenue of high-value items sold (items that are priced over $50)\n"
+                    + "   3. Show top 5 worst selling items\n"
+                    + "   4. Show how much $ was lost due to missing items\n"
+                    + "   5. Show the total number of missing items\n"
+                    + "   6. Show top 5 suppliers\n"
+                    + "   7. Show customers with highest return rates\n"
+                    + "   8. Show customers with lowest return rates\n"
+                    + "   9. Show most expensive item in inventory\n"
+                    + "   10. Show my first customer\n"
+                    + "   11. Show top 5 items that have the most stock\n"
+                    + "   12. Show the most inactive supplier (supplied the least amount of items)\n"
+                    + "   13. Exit\n");
+            int businessOwnerOption = in.nextInt();
 
-            switch (besinessOwnerOption) {
+            switch (businessOwnerOption) {
                 case 1 :
                     functionRequirement1(stmt);
                     break;
@@ -126,9 +135,36 @@ public class App {
                     functionRequirement2(stmt);
                     break;
                 case 3:
-                    functionRequirement4(stmt);
+                    functionRequirement3(stmt);
                     break;
                 case 4:
+                    functionRequirement4(stmt);
+                    break;
+                case 5:
+                    functionRequirement5(stmt);
+                    break;
+                case 6:
+                    functionRequirement6(stmt);
+                    break;
+                case 7:
+                    functionRequirement7(stmt);
+                    break;
+                case 8:
+                    functionRequirement8(stmt);
+                    break;
+                case 9:
+                    functionRequirement9(stmt);
+                    break;
+                case 10:
+                    functionRequirement12(stmt);
+                    break;
+                case 11:
+                    functionRequirement13(stmt);
+                    break;
+                case 12:
+                    functionRequirement16(stmt);
+                    break;
+                case 13:
                     exitRequested = true;
                     break;
             }
