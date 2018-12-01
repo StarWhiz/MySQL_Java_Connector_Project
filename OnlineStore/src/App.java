@@ -214,6 +214,7 @@ public class App {
      */
     public static void functionRequirement3(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -242,6 +243,7 @@ public class App {
      */
     private static void functionRequirement5(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -250,6 +252,7 @@ public class App {
      */
     private static void functionRequirement6(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -258,6 +261,7 @@ public class App {
      */
     private static void functionRequirement7(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -266,6 +270,7 @@ public class App {
      */
     private static void functionRequirement8(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -274,6 +279,7 @@ public class App {
      */
     private static void functionRequirement9(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -302,6 +308,7 @@ public class App {
      */
     private static void functionRequirement11(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -310,6 +317,7 @@ public class App {
      */
     private static void functionRequirement12(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -318,6 +326,7 @@ public class App {
      */
     private static void functionRequirement13(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -326,6 +335,7 @@ public class App {
      */
     private static void functionRequirement14(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -334,6 +344,7 @@ public class App {
      */
     private static void functionRequirement15(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -342,6 +353,7 @@ public class App {
      */
     private static void functionRequirement16(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 
     /**
@@ -350,6 +362,7 @@ public class App {
      */
     private static void functionRequirement17(Statement stmt) throws SQLException {
         ResultSet rs;
+        System.out.println("NOT YET IMPLEMENTED");
     }
 }
 
