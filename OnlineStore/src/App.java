@@ -141,10 +141,10 @@ public class App {
                     functionRequirement4(stmt);
                     break;
                 case 5:
-                    functionRequirement5(stmt);
+                    functionRequirement5(stmt); //TODO SKIP FOR NOW
                     break;
                 case 6:
-                    functionRequirement6(stmt);
+                    functionRequirement6(stmt); //TODO SKIP FOR NOW
                     break;
                 case 7:
                     functionRequirement7(stmt);
@@ -159,7 +159,7 @@ public class App {
                     functionRequirement12(stmt);
                     break;
                 case 11:
-                    functionRequirement13(stmt);
+                    functionRequirement13(stmt); //TODO SKIP FOR NOW
                     break;
                 case 12:
                     functionRequirement16(stmt);
@@ -238,7 +238,7 @@ public class App {
     }
 
     /**
-     * TODO
+     * TODO SKIP FOR NOW
      * Functional Requirement 5: As a business manager, I should be able to see the total number of items that are missing?
      */
     private static void functionRequirement5(Statement stmt) throws SQLException {
@@ -247,7 +247,7 @@ public class App {
     }
 
     /**
-     * TODO
+     * TODO SKIP FOR NOW
      * Functional Requirement 6: As a business manager, I want to see who my top 5 suppliers are (supplied the most items)
      */
     private static void functionRequirement6(Statement stmt) throws SQLException {
@@ -321,7 +321,7 @@ public class App {
     }
 
     /**
-     * TODO
+     * TODO SKIP FOR NOW
      * Functional Requirement 13: As a business manager, I see the top 5 items that I have the most in stock.
      */
     private static void functionRequirement13(Statement stmt) throws SQLException {
