@@ -189,8 +189,7 @@ public class App {
 	 */
 	private static void functionRequirement2(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery(
-				"SELECT Sum(I.itemprice) AS totalRevenue\n" + "FROM   items AS I\n" + "WHERE  I.itemprice > 50;");
+		rs = stmt.executeQuery("SELECT Sum(I.itemprice) AS totalRevenue\n" + "FROM   items AS I\n" + "WHERE  I.itemprice > 50;");
 		while (rs.next()) {
 			System.out.println("Total revenue = " + rs.getInt("totalRevenue"));
 		}
@@ -203,8 +202,7 @@ public class App {
 	 */
 	public static void functionRequirement3(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery(
-				"SELECT billofsale.itemid,\n" + " items.itemname,\n" + "       Sum(qtyordered) AS maxqty\n"
+		rs = stmt.executeQuery("SELECT billofsale.itemid,\n" + " items.itemname,\n" + "       Sum(qtyordered) AS maxqty\n"
 						+ "FROM billofsale \n" + "JOIN \n" + "items \n" + "WHERE  billofsale.itemid = items.itemid\n"
 						+ "GROUP  BY billofsale.itemid\n" + "ORDER  BY maxqty limit 5; \n");
 		System.out.format("%-15s%-30s%-15s\n", "Item ID", "Item Name", "Quantity Sold");
@@ -250,8 +248,7 @@ public class App {
 	 */
 	private static void functionRequirement6(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery(
-				"SELECT suppliername,\n" + "       Sum(qtyordered) AS totalqtysupplied\n" + "FROM   suppliers\n"
+		rs = stmt.executeQuery("SELECT suppliername,\n" + "       Sum(qtyordered) AS totalqtysupplied\n" + "FROM   suppliers\n"
 						+ "GROUP  BY suppliername \n" + "ORDER BY totalqtysupplied DESC \n" + "LIMIT 5;\n");
 		System.out.format("%-30s%-15s\n", "Supplier Name", "Quantity Supplied");
 		while (rs.next()) {
@@ -342,8 +339,7 @@ public class App {
 	 */
 	private static void functionRequirement12(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery(
-				"SELECT customerid,\n" + " customername\n" + "FROM   customers \n" + "WHERE  customerid =\n"
+		rs = stmt.executeQuery("SELECT customerid,\n" + " customername\n" + "FROM   customers \n" + "WHERE  customerid =\n"
 						+ "(SELECT customerid \n" + "FROM billofsale \n" + "ORDER BY purchasedate \n " + "LIMIT 1);\n");
 		System.out.format("%-15s%-30s\n", "Customer ID", "Customer name");
 		while (rs.next()) {
@@ -392,8 +388,7 @@ public class App {
 	 */
 	private static void functionRequirement15(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery(
-				"SELECT S1.suppliername,\n" + "Sum(S1.qtyordered) AS highestQty\n" + "FROM   suppliers S1\n"
+		rs = stmt.executeQuery("SELECT S1.suppliername,\n" + "Sum(S1.qtyordered) AS highestQty\n" + "FROM   suppliers S1\n"
 						+ "GROUP BY S1.suppliername \n" + "ORDER BY highestQty DESC \n" + "LIMIT 1;\n");
 		System.out.format("%-15s%-30s\n", "Supplier Name", "Quantity");
 		while (rs.next()) {
@@ -423,7 +418,7 @@ public class App {
 	 */
 	private static void functionRequirement17(Statement stmt) throws SQLException {
 		ResultSet rs;
-		
+
 		System.out.println("NOT YET IMPLEMENTED");
 	}
 }
