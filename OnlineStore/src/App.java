@@ -418,7 +418,6 @@ public class App {
 	 */
 	private static void functionRequirement17(Statement stmt) throws SQLException {
 		ResultSet rs;
-
 		System.out.println("NOT YET IMPLEMENTED");
 	}
 }
