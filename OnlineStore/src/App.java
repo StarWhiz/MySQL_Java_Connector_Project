@@ -316,9 +316,10 @@ public class App {
 		rs = stmt.executeQuery("SELECT itemname, \n" + "       Avg(rating) AS avgRating \n" + "FROM   items, \n"
 				+ "       reviews \n" + "WHERE  items.itemid = reviews.itemid \n" + "GROUP  BY items.itemid \n"
 				+ "ORDER  BY avgrating DESC \n" + "LIMIT  5;");
-		System.out.format("%-15s\n", "Items");
+		System.out.format("%-50s%-15s\n", "Items", "avgRating");
 		while (rs.next()) {
-			System.out.format("%-15s\n", rs.getString("itemname"));
+			System.out.format("%-50s", rs.getString("itemname"));
+			System.out.format("%-15s\n", rs.getString("avgRating"));
 		}
 		System.out.println();
 	}
@@ -373,9 +374,9 @@ public class App {
 				+ "FROM   billofsale\n" + "JOIN\n" + " items\n" + "WHERE  billofsale.itemid = items.itemid\n"
 				+ "GROUP  BY( billofsale.itemid )\n" + "ORDER BY qtyordered DESC\n" + "LIMIT 5;");
 
-		System.out.format("%-15s%-30s%-15s\n", "Item Name", "Item Sold ID", "Quantity Ordered");
+		System.out.format("%-40s%-30s%-15s\n", "Item Name", "Item Sold ID", "Quantity Ordered");
 		while (rs.next()) {
-			System.out.format("%-15s%-30s%-15s\n", rs.getString("itemname"), rs.getInt("billofsale.itemid"),
+			System.out.format("%-40s%-30s%-15s\n", rs.getString("itemname"), rs.getInt("billofsale.itemid"),
 					rs.getString("qtyordered"));
 		}
 		System.out.println();
