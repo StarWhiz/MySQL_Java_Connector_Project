@@ -5,11 +5,12 @@ import java.util.Scanner;
  * https://www.youtube.com/watch?v=NoPzqahrzp8
  */
 public class App {
-    static Connection connection;
+    private static Connection connection = null;
+    private static Statement stmt = null;
 	public static void main(String[] args) {
 		// System.out.println("MySQL JDBC Driver Registered!");
 		connection = null;
-		Statement stmt = null;
+		stmt = null;
 
 		try {
 			connection = DriverManager.getConnection(
@@ -17,6 +18,7 @@ public class App {
 					"root", "cs157arit");
 			stmt = connection.createStatement();
 
+            createProcedures();
 			printMainMenu(stmt); /* Print's the menu options. Functional Requirements are done here. */
 
 		} catch (SQLException e) {
@@ -425,6 +427,35 @@ public class App {
 		System.out.println("NOT YET IMPLEMENTED");
 	}
 
+    /**
+     * Creates a stored procedure
+     * @throws SQLException
+     */
+    private static void createProcedures() throws SQLException
+    {
+        String queryDrop = "DROP PROCEDURE IF EXISTS archiveItems;";
+        Statement stmtDrop = connection.createStatement();
+        stmtDrop.execute(queryDrop);
+
+        String createInParameterProcedure =
+                "DELIMITER // " +
+                "CREATE PROCEDURE archiveItems (IN cutoffdate DATE)" +
+                "begin" +
+                "  INSERT INTO archive " +
+                "  (SELECT * " +
+                "   FROM   items " +
+                "   WHERE  DATE(updatedat) >= cutoffdate);" +
+                "  DELETE FROM items " +
+                "  WHERE  itemid IN (SELECT * FROM   archive); " +
+                "END// " +
+                "DELIMITER ;";
+        stmt.executeUpdate(createInParameterProcedure);
+    }
+
+    /**
+     * Calls the archiveItems function and get the result
+     * @throws SQLException
+     */
 	private static void archiveItems() throws SQLException {
         Scanner in = new Scanner(System.in);
         System.out.println("Specify the cutoff date that you want to archive from in 'yyyy-mm-dd' format");
@@ -436,9 +467,26 @@ public class App {
         cstmt.setDate(1, Date.valueOf(cutoffDate));
         boolean hasResult = cstmt.execute();
         while (hasResult) {
-
+            System.out.println("Archived the following items:");
+            ResultSet rs = cstmt.getResultSet();
+            printResultSet(rs);
+            rs.close();
+            hasResult = cstmt.getMoreResults();
         }
-
-
 	}
+
+    /**
+     * Print out the result of archives
+     * @param rs
+     * @throws SQLException
+     */
+    private static void printResultSet(ResultSet rs) throws SQLException
+    {
+        while(rs.next())
+        {
+            int id = rs.getInt("itemid");
+            String name = rs.getString("itemname");
+            System.out.println("Item ID:" + id + " Item Name:" + name);
+        }
+    }
 }
