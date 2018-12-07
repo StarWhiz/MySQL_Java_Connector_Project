@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS `suppliers`;
 DROP TABLE IF EXISTS `reviews`;
 DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `items`;
+DROP TABLE IF EXISTS `archivedItems`;
 
 CREATE TABLE `items` (
   `itemid` int(11) NOT NULL,
@@ -75,60 +76,59 @@ INSERT INTO `items` VALUES (9864, 'GL.inet SLATE AR750S Router', '62.99',31,'201
 CREATE TABLE `customers` (
   `customername` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `customerid` int(11) NOT NULL,
-  `numberofreturns` int(11) DEFAULT NULL,
   PRIMARY KEY (`customerid`)
 );
 
-INSERT INTO `customers` VALUES ('Alysha Wisozk', 76, 5);
-INSERT INTO `customers` VALUES ('Ezra Emmerich III', 181, 5);
-INSERT INTO `customers` VALUES ('Prof. Darian Paucek DDS', 215, 5);
-INSERT INTO `customers` VALUES ('Prof. Lilliana Schroeder I', 331, 2);
-INSERT INTO `customers` VALUES ('Ali Hoeger', 1031, 5);
-INSERT INTO `customers` VALUES ('Dr. Salvador Kshlerin', 1078, 8);
-INSERT INTO `customers` VALUES ('Dr. Reece West', 1174, 4);
-INSERT INTO `customers` VALUES ('Andres Boyer', 1184, 7);
-INSERT INTO `customers` VALUES ('Miss Brenna Hyatt MD', 1389, 8);
-INSERT INTO `customers` VALUES ('Odell Schulist', 1582, 6);
-INSERT INTO `customers` VALUES ('Christop Reichel PhD', 1806, 2);
-INSERT INTO `customers` VALUES ('Providenci Hayes', 2030, 7);
-INSERT INTO `customers` VALUES ('Magali Reichel', 2060, 3);
-INSERT INTO `customers` VALUES ('Addie Stehr', 3192, 9);
-INSERT INTO `customers` VALUES ('Antoinette Powlowski', 3253, 5);
-INSERT INTO `customers` VALUES ('Uriel King', 3643, 2);
-INSERT INTO `customers` VALUES ('Dr. Devyn Cormier', 3658, 6);
-INSERT INTO `customers` VALUES ('Anne Cummings III', 4101, 4);
-INSERT INTO `customers` VALUES ('Federico Wintheiser', 4437, 9);
-INSERT INTO `customers` VALUES ('Miss Kara Nikolaus III', 4549, 4);
-INSERT INTO `customers` VALUES ('Lora Monahan', 4746, 8);
-INSERT INTO `customers` VALUES ('Ebony Hayes', 4955, 5);
-INSERT INTO `customers` VALUES ('Walker Bartoletti', 4980, 4);
-INSERT INTO `customers` VALUES ('Mohammad Mosciski', 5003, 5);
-INSERT INTO `customers` VALUES ('Prof. Alek Kris', 5017, 2);
-INSERT INTO `customers` VALUES ('Donnie Johnston', 5261, 8);
-INSERT INTO `customers` VALUES ('Aric Deckow PhD', 5355, 7);
-INSERT INTO `customers` VALUES ('Keith Kutch Jr.', 5422, 6);
-INSERT INTO `customers` VALUES ('Jimmy Ritchie', 5919, 8);
-INSERT INTO `customers` VALUES ('Amani Leannon', 6201, 3);
-INSERT INTO `customers` VALUES ('Santa Haag', 6282, 8);
-INSERT INTO `customers` VALUES ('Marisol Moen', 6412, 4);
-INSERT INTO `customers` VALUES ('Pink Hahn Sr.', 6654, 8);
-INSERT INTO `customers` VALUES ('Tyrique Herzog Jr.', 6757, 8);
-INSERT INTO `customers` VALUES ('Ms. Allene O\'Connell MD', 6843, 7);
-INSERT INTO `customers` VALUES ('Prof. Angelica Boyle V', 6920, 8);
-INSERT INTO `customers` VALUES ('Destini Krajcik', 7142, 7);
-INSERT INTO `customers` VALUES ('Kelley Brakus', 7237, 2);
-INSERT INTO `customers` VALUES ('Prof. Leanne Senger', 7397, 7);
-INSERT INTO `customers` VALUES ('Pink Jacobs III', 7484, 2);
-INSERT INTO `customers` VALUES ('Ms. Dejah O\'Conner DDS', 7503, 6);
-INSERT INTO `customers` VALUES ('Mrs. Tomasa Schuster', 7523, 6);
-INSERT INTO `customers` VALUES ('Leonel Kutch', 7665, 4);
-INSERT INTO `customers` VALUES ('Josephine Runolfsson', 7929, 2);
-INSERT INTO `customers` VALUES ('Amy Veum', 8002, 9);
-INSERT INTO `customers` VALUES ('Mr. Reed Streich', 8148, 8);
-INSERT INTO `customers` VALUES ('Enrico Goldner', 8364, 3);
-INSERT INTO `customers` VALUES ('Jannie Jacobson', 8644, 4);
-INSERT INTO `customers` VALUES ('Telly Herman', 9137, 5);
-INSERT INTO `customers` VALUES ('Robbie Bartell', 9813, 4);
+INSERT INTO `customers` VALUES ('Alysha Wisozk', 76);
+INSERT INTO `customers` VALUES ('Ezra Emmerich III', 181);
+INSERT INTO `customers` VALUES ('Prof. Darian Paucek DDS', 215);
+INSERT INTO `customers` VALUES ('Prof. Lilliana Schroeder I', 331);
+INSERT INTO `customers` VALUES ('Ali Hoeger', 1031);
+INSERT INTO `customers` VALUES ('Dr. Salvador Kshlerin', 1078);
+INSERT INTO `customers` VALUES ('Dr. Reece West', 1174);
+INSERT INTO `customers` VALUES ('Andres Boyer', 1184);
+INSERT INTO `customers` VALUES ('Miss Brenna Hyatt MD', 1389);
+INSERT INTO `customers` VALUES ('Odell Schulist', 1582);
+INSERT INTO `customers` VALUES ('Christop Reichel PhD', 1806);
+INSERT INTO `customers` VALUES ('Providenci Hayes', 2030);
+INSERT INTO `customers` VALUES ('Magali Reichel', 2060);
+INSERT INTO `customers` VALUES ('Addie Stehr', 3192);
+INSERT INTO `customers` VALUES ('Antoinette Powlowski', 3253);
+INSERT INTO `customers` VALUES ('Uriel King', 3643);
+INSERT INTO `customers` VALUES ('Dr. Devyn Cormier', 3658);
+INSERT INTO `customers` VALUES ('Anne Cummings III', 4101);
+INSERT INTO `customers` VALUES ('Federico Wintheiser', 4437);
+INSERT INTO `customers` VALUES ('Miss Kara Nikolaus III', 4549);
+INSERT INTO `customers` VALUES ('Lora Monahan', 4746);
+INSERT INTO `customers` VALUES ('Ebony Hayes', 4955);
+INSERT INTO `customers` VALUES ('Walker Bartoletti', 4980);
+INSERT INTO `customers` VALUES ('Mohammad Mosciski', 5003);
+INSERT INTO `customers` VALUES ('Prof. Alek Kris', 5017);
+INSERT INTO `customers` VALUES ('Donnie Johnston', 5261);
+INSERT INTO `customers` VALUES ('Aric Deckow PhD', 5355);
+INSERT INTO `customers` VALUES ('Keith Kutch Jr.', 5422);
+INSERT INTO `customers` VALUES ('Jimmy Ritchie', 5919);
+INSERT INTO `customers` VALUES ('Amani Leannon', 6201);
+INSERT INTO `customers` VALUES ('Santa Haag', 6282);
+INSERT INTO `customers` VALUES ('Marisol Moen', 6412);
+INSERT INTO `customers` VALUES ('Pink Hahn Sr.', 6654);
+INSERT INTO `customers` VALUES ('Tyrique Herzog Jr.', 6757);
+INSERT INTO `customers` VALUES ('Ms. Allene O\'Connell MD', 6843);
+INSERT INTO `customers` VALUES ('Prof. Angelica Boyle V', 6920);
+INSERT INTO `customers` VALUES ('Destini Krajcik', 7142);
+INSERT INTO `customers` VALUES ('Kelley Brakus', 7237);
+INSERT INTO `customers` VALUES ('Prof. Leanne Senger', 7397);
+INSERT INTO `customers` VALUES ('Pink Jacobs III', 7484);
+INSERT INTO `customers` VALUES ('Ms. Dejah O\'Conner DDS', 7503);
+INSERT INTO `customers` VALUES ('Mrs. Tomasa Schuster', 7523);
+INSERT INTO `customers` VALUES ('Leonel Kutch', 7665);
+INSERT INTO `customers` VALUES ('Josephine Runolfsson', 7929);
+INSERT INTO `customers` VALUES ('Amy Veum', 8002);
+INSERT INTO `customers` VALUES ('Mr. Reed Streich', 8148);
+INSERT INTO `customers` VALUES ('Enrico Goldner', 8364);
+INSERT INTO `customers` VALUES ('Jannie Jacobson', 8644);
+INSERT INTO `customers` VALUES ('Telly Herman', 9137);
+INSERT INTO `customers` VALUES ('Robbie Bartell', 9813);
 
 
 
@@ -663,6 +663,14 @@ INSERT INTO `reviews` VALUES ('980007','2017-08-21','2701','1389','1');
 INSERT INTO `reviews` VALUES ('991394','2015-05-21','9456','8364','0'); 
 
 
+CREATE TABLE `archivedItems` (
+  `itemid` int(11) NOT NULL,
+  `itemname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `itemprice` float(10,2) DEFAULT NULL,
+  `qtyinstock` int(11) DEFAULT NULL,
+  `updatedAt` date DEFAULT NULL,
+  PRIMARY KEY (`itemid`)
+);
 
 
 
