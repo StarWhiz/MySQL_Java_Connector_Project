@@ -438,17 +438,15 @@ public class App {
         stmtDrop.execute(queryDrop);
 
         String createInParameterProcedure =
-                "DELIMITER // " +
                 "CREATE PROCEDURE archiveItems (IN cutoffdate DATE)" +
-                "begin" +
-                "  INSERT INTO archive " +
+                "BEGIN" +
+                "  INSERT INTO archivedItems " +
                 "  (SELECT * " +
                 "   FROM   items " +
-                "   WHERE  DATE(updatedat) >= cutoffdate);" +
+                "   WHERE  updatedat >= cutoffdate);" +
                 "  DELETE FROM items " +
-                "  WHERE  itemid IN (SELECT * FROM   archive); " +
-                "END// " +
-                "DELIMITER ;";
+                "  WHERE  itemid IN (SELECT * FROM archivedItems); " +
+                "END";
         stmt.executeUpdate(createInParameterProcedure);
     }
 
@@ -465,14 +463,8 @@ public class App {
         String sql = "{call archiveItems(?)}";
         cstmt = connection.prepareCall(sql);
         cstmt.setDate(1, Date.valueOf(cutoffDate));
-        boolean hasResult = cstmt.execute();
-        while (hasResult) {
-            System.out.println("Archived the following items:");
-            ResultSet rs = cstmt.getResultSet();
-            printResultSet(rs);
-            rs.close();
-            hasResult = cstmt.getMoreResults();
-        }
+        ResultSet rs = cstmt.executeQuery();
+        printResultSet(rs);
 	}
 
     /**
