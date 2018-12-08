@@ -5,8 +5,9 @@ import java.util.Scanner;
  * https://www.youtube.com/watch?v=NoPzqahrzp8
  */
 public class App {
-    private static Connection connection = null;
-    private static Statement stmt = null;
+	private static Connection connection = null;
+	private static Statement stmt = null;
+  
 	public static void main(String[] args) {
 		// System.out.println("MySQL JDBC Driver Registered!");
 		connection = null;
@@ -110,14 +111,15 @@ public class App {
 					+ "   2. Show the total revenue of high-value items sold (items that are priced over $50)\n"
 					+ "   3. Show top 5 worst selling items\n" + "   4. Show how much $ was lost due to missing items\n"
 					+ "   5. Show the total number of missing items\n" + "   6. Show top 5 suppliers\n"
-					+ "   7. Show customers with highest return rates\n"
-					+ "   8. Show customers with lowest return rates\n"
+					+ "   7. Show the difference between (total $ of sales done)before and after the year 2015 \n"
+					+ "   8. Show which suppliers have supplied more than 100 items\n"
 					+ "   9. Show most expensive item in inventory\n" + "   10. Show my first customer\n"
 					+ "   11. Show top 5 items that have the most stock\n"
 					+ "   12. Show the most inactive supplier (supplied the least amount of items)\n"
 					+ "   13. Show the most active supplier (supplied the highest amount of items)\n"
 					+ "   14. Archive some data\n"
 					+ "   15. Exit\n");
+
 			int businessOwnerOption = in.nextInt();
 
 			switch (businessOwnerOption) {
@@ -195,7 +197,8 @@ public class App {
 	 */
 	private static void functionRequirement2(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery("SELECT Sum(I.itemprice) AS totalRevenue\n" + "FROM   items AS I\n" + "WHERE  I.itemprice > 50;");
+		rs = stmt.executeQuery(
+				"SELECT Sum(I.itemprice) AS totalRevenue\n" + "FROM   items AS I\n" + "WHERE  I.itemprice > 50;");
 		while (rs.next()) {
 			System.out.println("Total revenue = " + rs.getInt("totalRevenue"));
 		}
@@ -208,7 +211,8 @@ public class App {
 	 */
 	public static void functionRequirement3(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery("SELECT billofsale.itemid,\n" + " items.itemname,\n" + "       Sum(qtyordered) AS maxqty\n"
+		rs = stmt.executeQuery(
+				"SELECT billofsale.itemid,\n" + " items.itemname,\n" + "       Sum(qtyordered) AS maxqty\n"
 						+ "FROM billofsale \n" + "JOIN \n" + "items \n" + "WHERE  billofsale.itemid = items.itemid\n"
 						+ "GROUP  BY billofsale.itemid\n" + "ORDER  BY maxqty limit 5; \n");
 		System.out.format("%-15s%-30s%-15s\n", "Item ID", "Item Name", "Quantity Sold");
@@ -254,7 +258,8 @@ public class App {
 	 */
 	private static void functionRequirement6(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery("SELECT suppliername,\n" + "       Sum(qtyordered) AS totalqtysupplied\n" + "FROM   suppliers\n"
+		rs = stmt.executeQuery(
+				"SELECT suppliername,\n" + "       Sum(qtyordered) AS totalqtysupplied\n" + "FROM   suppliers\n"
 						+ "GROUP  BY suppliername \n" + "ORDER BY totalqtysupplied DESC \n" + "LIMIT 5;\n");
 		System.out.format("%-30s%-15s\n", "Supplier Name", "Quantity Supplied");
 		while (rs.next()) {
@@ -264,35 +269,36 @@ public class App {
 	}
 
 	/**
-	 * Functional Requirement 7: As a business manager, I should be able to see
-	 * which customer has the highest return rates
+	 * Functional Requirement 7: As a business owner I want to find the difference
+	 * between (total $ of sales done) before and after the year 2015
 	 */
 	private static void functionRequirement7(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery("SELECT C1.customerid,\n" + "       C1.customername,\n" + "       C1.numberofreturns \n"
-				+ "FROM   customers AS C1\n" + "WHERE  C1.numberofreturns >= ALL \n" + "(SELECT C2.numberofreturns \n"
-				+ "FROM customers AS C2 \n" + "WHERE C1.customerid <> C2.customerid);");
-		System.out.format("%-15s%-30s%-15s\n", "Customer ID", "Customer name", "Return Rate");
+		rs = stmt.executeQuery("SELECT Max(diff.sum) - Min(diff.sum) \n" + "FROM  ((SELECT Sum(itemprice) AS sum \n"
+				+ "FROM   billofsale \n" + "WHERE purchasedate < '2015-01-01') \n" + "UNION \n"
+				+ "(SELECT Sum(itemprice) AS sum \n" + " FROM billofsale \n"
+				+ "WHERE purchasedate >= '2015-01-01')) AS diff; \n");
+		System.out.print("The difference of Sale before and after 2015 = $");
 		while (rs.next()) {
-			System.out.format("%-15s%-30s%-15s\n", rs.getInt("customerid"), rs.getString("customername"),
-					rs.getInt("C1.numberofreturns"));
+			// System.out.format("The difference of Sale before and after 2015 = " +
+			// rs.getString("diff");
+			System.out.print(rs.getString("Max(diff.sum) - Min(diff.sum)"));
 		}
 		System.out.println();
 	}
 
 	/**
-	 * Functional Requirement 8: As a business manager, I should be able to see
-	 * which customers have the lowest return rates.
+	 * Functional Requirement 8: As a business owner I want to know which suppliers
+	 * have supplied more than 100 items.
 	 */
 	private static void functionRequirement8(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery("SELECT C1.customerid,\n" + "       C1.customername,\n" + "       C1.numberofreturns \n"
-				+ "FROM   customers AS C1\n" + "WHERE  C1.numberofreturns <= ALL \n" + "(SELECT C2.numberofreturns \n"
-				+ "FROM customers AS C2 \n" + "WHERE C1.customerid <> C2.customerid);");
-		System.out.format("%-15s%-30s%-15s\n", "Customer ID", "Customer name", "Return Rate");
+		rs = stmt.executeQuery("SELECT  S1.suppliername , Sum(S1.qtyordered) AS totalQtyOrdered \n"
+				+ "FROM   suppliers S1 \n" + "GROUP  BY S1.suppliername \n" + "HAVING totalQtyOrdered > 100; \n");
+
+		System.out.format("%-15s%-30s\n", "Supplier Name", "Total Qutity Ordred");
 		while (rs.next()) {
-			System.out.format("%-15s%-30s%-15s\n", rs.getInt("customerid"), rs.getString("customername"),
-					rs.getInt("C1.numberofreturns"));
+			System.out.format("%-15s%-30s\n", rs.getString("S1.suppliername"), rs.getString("totalQtyOrdered"));
 		}
 		System.out.println();
 	}
@@ -322,9 +328,10 @@ public class App {
 		rs = stmt.executeQuery("SELECT itemname, \n" + "       Avg(rating) AS avgRating \n" + "FROM   items, \n"
 				+ "       reviews \n" + "WHERE  items.itemid = reviews.itemid \n" + "GROUP  BY items.itemid \n"
 				+ "ORDER  BY avgrating DESC \n" + "LIMIT  5;");
-		System.out.format("%-15s\n", "Items");
+		System.out.format("%-50s%-15s\n", "Items", "avgRating");
 		while (rs.next()) {
-			System.out.format("%-15s\n", rs.getString("itemname"));
+			System.out.format("%-50s", rs.getString("itemname"));
+			System.out.format("%-15s\n", rs.getString("avgRating"));
 		}
 		System.out.println();
 	}
@@ -345,7 +352,8 @@ public class App {
 	 */
 	private static void functionRequirement12(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery("SELECT customerid,\n" + " customername\n" + "FROM   customers \n" + "WHERE  customerid =\n"
+		rs = stmt.executeQuery(
+				"SELECT customerid,\n" + " customername\n" + "FROM   customers \n" + "WHERE  customerid =\n"
 						+ "(SELECT customerid \n" + "FROM billofsale \n" + "ORDER BY purchasedate \n " + "LIMIT 1);\n");
 		System.out.format("%-15s%-30s\n", "Customer ID", "Customer name");
 		while (rs.next()) {
@@ -379,9 +387,9 @@ public class App {
 				+ "FROM   billofsale\n" + "JOIN\n" + " items\n" + "WHERE  billofsale.itemid = items.itemid\n"
 				+ "GROUP  BY( billofsale.itemid )\n" + "ORDER BY qtyordered DESC\n" + "LIMIT 5;");
 
-		System.out.format("%-15s%-30s%-15s\n", "Item Name", "Item Sold ID", "Quantity Ordered");
+		System.out.format("%-40s%-30s%-15s\n", "Item Name", "Item Sold ID", "Quantity Ordered");
 		while (rs.next()) {
-			System.out.format("%-15s%-30s%-15s\n", rs.getString("itemname"), rs.getInt("billofsale.itemid"),
+			System.out.format("%-40s%-30s%-15s\n", rs.getString("itemname"), rs.getInt("billofsale.itemid"),
 					rs.getString("qtyordered"));
 		}
 		System.out.println();
@@ -394,7 +402,8 @@ public class App {
 	 */
 	private static void functionRequirement15(Statement stmt) throws SQLException {
 		ResultSet rs;
-		rs = stmt.executeQuery("SELECT S1.suppliername,\n" + "Sum(S1.qtyordered) AS highestQty\n" + "FROM   suppliers S1\n"
+		rs = stmt.executeQuery(
+				"SELECT S1.suppliername,\n" + "Sum(S1.qtyordered) AS highestQty\n" + "FROM   suppliers S1\n"
 						+ "GROUP BY S1.suppliername \n" + "ORDER BY highestQty DESC \n" + "LIMIT 1;\n");
 		System.out.format("%-15s%-30s\n", "Supplier Name", "Quantity");
 		while (rs.next()) {
