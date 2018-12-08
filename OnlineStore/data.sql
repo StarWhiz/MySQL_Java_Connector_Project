@@ -10,6 +10,11 @@ DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `items`;
 DROP TABLE IF EXISTS `archivedItems`;
 
+DROP TRIGGER IF EXISTS transactionoccured;
+DROP TRIGGER IF EXISTS deletebillofsale;
+
+
+
 CREATE TABLE `items` (
   `itemid` int(11) NOT NULL,
   `itemname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -69,7 +74,6 @@ INSERT INTO `items` VALUES (9456, 'Thai Tea Boba', '4.75',41,'2016-07-19');
 INSERT INTO `items` VALUES (9576, 'Zalman CPU Cooler', '9.51',91,'2018-03-07');
 INSERT INTO `items` VALUES (9628, 'EVGA GTX 970', '115.25',84,'2018-10-10');
 INSERT INTO `items` VALUES (9864, 'GL.inet SLATE AR750S Router', '62.99',31,'2014-07-20');
-
 
 
 
@@ -299,10 +303,6 @@ INSERT INTO `billofsale` VALUES('1149','5027','8','53.24','2018-11-13','4101','n
 
 
 
-
-
-
-
 CREATE TABLE `itemgraveyard` (
   `itemid` int(11) NOT NULL,
   `qtymissing` int(11) DEFAULT NULL,
@@ -335,7 +335,6 @@ INSERT INTO `itemgraveyard` VALUES (5390,4,'2017-02-06');
 INSERT INTO `itemgraveyard` VALUES (5404,8,'2014-07-18');
 INSERT INTO `itemgraveyard` VALUES (5713,7,'2017-10-23');
 INSERT INTO `itemgraveyard` VALUES (5935,0,'2015-03-03'); 
-
 
 
 
@@ -666,6 +665,7 @@ INSERT INTO `reviews` VALUES ('980007','2017-08-21','2701','1389','1');
 INSERT INTO `reviews` VALUES ('991394','2015-05-21','9456','8364','0'); 
 
 
+
 CREATE TABLE `archivedItems` (
   `itemid` int(11) NOT NULL,
   `itemname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -677,3 +677,21 @@ CREATE TABLE `archivedItems` (
 
 
 
+CREATE TRIGGER transactionoccured
+  AFTER INSERT ON billofsale
+  FOR EACH ROW
+  UPDATE items
+  SET    items.qtyinstock = items.qtyinstock - NEW.qtyordered
+  WHERE  itemid = NEW.itemid;
+
+
+
+delimiter //
+CREATE TRIGGER deletebillofsale after DELETE ON billofsale 
+FOR EACH ROW
+BEGIN
+UPDATE items
+SET    qtyinstock = old.qtyordered + qtyinstock
+WHERE  itemid = old.itemid;
+END//
+delimiter ;
