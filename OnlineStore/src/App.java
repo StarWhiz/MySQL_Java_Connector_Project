@@ -18,7 +18,7 @@ public class App {
 					"root", "cs157arit");
 			stmt = connection.createStatement();
 
-            createProcedures();
+            createProcedures(stmt);
 			printMainMenu(stmt); /* Print's the menu options. Functional Requirements are done here. */
 
 		} catch (SQLException e) {
@@ -431,11 +431,10 @@ public class App {
      * Creates a stored procedure
      * @throws SQLException
      */
-    private static void createProcedures() throws SQLException
+    private static void createProcedures(Statement stmt) throws SQLException
     {
         String queryDrop = "DROP PROCEDURE IF EXISTS archiveItems;";
-        Statement stmtDrop = connection.createStatement();
-        stmtDrop.execute(queryDrop);
+        stmt.execute(queryDrop);
 
         String createInParameterProcedure =
                 "CREATE PROCEDURE archiveItems (IN cutoffdate DATE)" +
