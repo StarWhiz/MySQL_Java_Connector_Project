@@ -133,17 +133,19 @@ INSERT INTO `customers` VALUES ('Robbie Bartell', 9813);
 
 
 CREATE TABLE `billofsale` (
-  `transactionid` int(11) NOT NULL,
+  `transactionid` int(11) NOT NULL AUTO_INCREMENT,
   `itemid` int(11) DEFAULT NULL,
   `qtyordered` int(11) DEFAULT NULL,
   `itemprice` float(10,2) DEFAULT NULL,
   `purchasedate` date DEFAULT NULL,
   `customerid` int(11) DEFAULT NULL,
-  `return?` varchar(3) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `return?` varchar(3) DEFAULT "no",
   PRIMARY KEY (`transactionid`),
   FOREIGN KEY (`itemid`) REFERENCES `items` (`itemid`),
   FOREIGN KEY (`customerid`) REFERENCES `customers` (`customerid`)
 );
+ALTER TABLE billofsale AUTO_INCREMENT = 1150;
+
 INSERT INTO `billofsale` VALUES('1000','5380','7','58.43','2013-12-10','4746','no');
 INSERT INTO `billofsale` VALUES('1001','6342','2','68.43','2013-12-15','5422','no');
 INSERT INTO `billofsale` VALUES('1002','5390','7','61.70','2013-12-17','4955','no');
