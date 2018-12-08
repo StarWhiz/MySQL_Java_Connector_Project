@@ -160,7 +160,7 @@ public class App {
 				functionRequirement15(stmt);
 				break;
 			case 14:
-				archiveItems();
+				//archiveItems(); SEE Izzy's Branch
 				break;
 			case 15:
 				exitRequested = true;
@@ -431,53 +431,5 @@ public class App {
 	private static void functionRequirement17(Statement stmt) throws SQLException {
 		ResultSet rs;
 		System.out.println("NOT YET IMPLEMENTED");
-	}
-
-	/**
-	 * Creates a stored procedure
-	 * 
-	 * @throws SQLException
-	 */
-	private static void createProcedures(Statement stmt) throws SQLException {
-		String queryDrop = "DROP PROCEDURE IF EXISTS archiveItems;";
-		stmt.execute(queryDrop);
-
-		String createInParameterProcedure = "CREATE PROCEDURE archiveItems (IN cutoffdate DATE)" + "BEGIN"
-				+ "  INSERT INTO archivedItems " + "  (SELECT * " + "   FROM   items "
-				+ "   WHERE  updatedat >= cutoffdate);" + "  DELETE FROM items "
-				+ "  WHERE  itemid IN (SELECT * FROM archivedItems); " + "END";
-		stmt.executeUpdate(createInParameterProcedure);
-	}
-
-	/**
-	 * Calls the archiveItems function and get the result
-	 * 
-	 * @throws SQLException
-	 */
-	private static void archiveItems() throws SQLException {
-		Scanner in = new Scanner(System.in);
-		System.out.println("Specify the cutoff date that you want to archive from in 'yyyy-mm-dd' format");
-		String cutoffDate = in.next();
-
-		CallableStatement cstmt = null;
-		String sql = "{call archiveItems(?)}";
-		cstmt = connection.prepareCall(sql);
-		cstmt.setDate(1, Date.valueOf(cutoffDate));
-		ResultSet rs = cstmt.executeQuery();
-		printResultSet(rs);
-	}
-
-	/**
-	 * Print out the result of archives
-	 * 
-	 * @param rs
-	 * @throws SQLException
-	 */
-	private static void printResultSet(ResultSet rs) throws SQLException {
-		while (rs.next()) {
-			int id = rs.getInt("itemid");
-			String name = rs.getString("itemname");
-			System.out.println("Item ID:" + id + " Item Name:" + name);
-		}
 	}
 }
