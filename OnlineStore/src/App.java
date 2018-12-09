@@ -74,9 +74,13 @@ public class App {
 
 		while (!exitRequested) {
 			System.out.println("You are a customer.\n");
-			System.out.println("What would you like to do today?\n" + "   1. View top 5 rated items. \n" //
-					+ "   2. View all available and unavailable items\n" + "   3. View top 5 best selling items\n"
-					+ "   4. View my purchase history\n" + "   5. Logout (customer logout)\n");
+			System.out.println("What would you like to do today?\n"
+                    + "   1. View top 5 rated items. \n" //
+					+ "   2. View all available and unavailable items\n"
+                    + "   3. View top 5 best selling items\n"
+					+ "   4. View my purchase history\n"
+                    + "   5. Buy items\n"
+                    + "   6. Logout (customer logout)\n");
 			int customerOption = in.nextInt();
 
 			switch (customerOption) {
@@ -91,7 +95,11 @@ public class App {
 				break;
 			case 4:
 				functionRequirement17(stmt);
+				break;
 			case 5:
+			    buyItem(stmt);
+			    break;
+			case 6:
 				exitRequested = true;
 				break;
 			}
@@ -436,6 +444,54 @@ public class App {
 		System.out.println("NOT YET IMPLEMENTED");
 	}
 
+	private static void buyItem(Statement stmt) throws SQLException {
+        ResultSet rs;
+        String query;
+        PreparedStatement preparedStatement;
+        Scanner in = new Scanner(System.in);
+        System.out.println("What is your customer ID?");
+        int customerId = in.nextInt();
+        System.out.println("Here are all the available items.");
+        System.out.println("---------------------------------");
+
+        // print all available items
+        showAllAvailableItems(stmt);
+
+        System.out.println();
+        System.out.println();
+        System.out.println("Which item would you like to buy? Please provide the itemId.");
+        int itemId = in.nextInt();
+        System.out.println("How many items would you like to buy?");
+        int qty = in.nextInt();
+
+        // Get the item price from the given itemid
+        query = "SELECT itemprice FROM items WHERE itemid = ?;";
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1,itemId);
+        rs = preparedStatement.executeQuery();
+        float itemPrice = 0;
+        if (rs.next()) {
+            itemPrice = rs.getFloat("itemprice");
+        }
+
+        // insert a new row in billofsale
+        query =  "INSERT INTO billofsale "
+                + "(itemid, qtyordered, itemprice, purchasedate, customerid) VALUES"
+                + "(?, ?, ?, ?, ?)";
+        preparedStatement= connection.prepareStatement(query);
+        preparedStatement.setInt(1,itemId);
+        preparedStatement.setInt(2, qty);
+        preparedStatement.setFloat(3,itemPrice);
+        preparedStatement.setDate(4, new Date(System.currentTimeMillis()));
+        preparedStatement.setInt(5, customerId);
+        preparedStatement.executeUpdate();
+
+        System.out.println();
+        System.out.println("Thank you for your purchase");
+        System.out.println();
+        showAllBillOfSale(stmt);
+    }
+
     /**
      * Creates a stored procedure
      * @throws SQLException
@@ -487,6 +543,45 @@ public class App {
             int id = rs.getInt("itemid");
             String name = rs.getString("itemname");
             System.out.println("Item ID:" + id + " Item Name:" + name);
+        }
+    }
+
+    /**
+     * Print out all the items in items table
+     * @param stmt
+     * @throws SQLException
+     */
+    private static void showAllAvailableItems(Statement stmt) throws SQLException {
+        ResultSet rs = stmt.executeQuery("SELECT itemid,itemname,itemprice,qtyinstock FROM items;");
+        System.out.format("%-15s%-40s%-30s%-30s\n", "Item ID", "Item Name", "Item Price", "Quantity in Stock");
+        while (rs.next()) {
+            System.out.format("%-15s%-40s%-30s%-30s\n",
+                    rs.getString("itemid"),
+                    rs.getString("itemname"),
+                    rs.getString("itemprice"),
+                    rs.getString("qtyinstock"));
+        }
+    }
+
+    /**
+     * TODO: This is for debugging purpose. Needs to be deleted before submission
+     * @param stmt
+     * @throws SQLException
+     */
+    private static void showAllBillOfSale(Statement stmt) throws SQLException {
+        ResultSet rs = stmt.executeQuery("SELECT * FROM billofsale;");
+        System.out.format("%-20s%-20s%-30s%-30s%-30s%-30s\n",
+                "Transaction Id", "Item ID", "Qty ordered", "Item price" +
+                "Purchase date", "Customer id" , "return?");
+        while (rs.next()) {
+            System.out.format("%-20s%-20s%-30s%-30s%-30s%-30s\n",
+                    rs.getString("transactionid"),
+                    rs.getString("itemid"),
+                    rs.getString("qtyordered"),
+                    rs.getString("itemprice"),
+                    rs.getString("purchasedate"),
+                    rs.getString("customerid"),
+                    rs.getString("return?"));
         }
     }
 }
