@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `suppliers`;
 DROP TABLE IF EXISTS `reviews`;
 DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `items`;
-DROP TABLE IF EXISTS `archivedItems`;
+DROP TABLE IF EXISTS `archivedCustomers`;
 
 DROP TRIGGER IF EXISTS transactionoccured;
 DROP TRIGGER IF EXISTS deletebillofsale;
@@ -679,7 +679,6 @@ CREATE TABLE `archivedCustomers` (
 
 
 delimiter //
-
 CREATE TRIGGER transactionoccured
   AFTER INSERT ON billofsale
   FOR EACH ROW
@@ -691,7 +690,7 @@ BEGIN
   WHERE  itemid = NEW.itemid;
 
   UPDATE customers
-  SET totalNumOfPurchases = totalNumOfPurchases + 1
+  SET totalNumOfPurchases = totalNumOfPurchases + NEW.qtyordered
   WHERE customers.customerid = NEW.customerid;
 
   UPDATE customers
@@ -699,16 +698,28 @@ BEGIN
   WHERE customers.customerid = NEW.customerid;
 
 END//
-
 delimiter ;
-
 
 delimiter //
-CREATE TRIGGER deletebillofsale after DELETE ON billofsale 
-FOR EACH ROW
+CREATE TRIGGER deletebillofsale 
+  AFTER DELETE ON billofsale
+  FOR EACH ROW
 BEGIN
-UPDATE items
-SET    qtyinstock = old.qtyordered + qtyinstock
-WHERE  itemid = old.itemid;
+
+  UPDATE items
+  SET    items.qtyinstock = items.qtyinstock + OLD.qtyordered
+  WHERE  itemid = OLD.itemid;
+
+  UPDATE customers
+  SET totalNumOfPurchases = totalNumOfPurchases - OLD.qtyordered
+  WHERE customers.customerid = OLD.customerid;
+
+  UPDATE customers
+  SET updatedAt = CURDATE()
+  WHERE customers.customerid = OLD.customerid;
+
 END//
 delimiter ;
+
+
+
