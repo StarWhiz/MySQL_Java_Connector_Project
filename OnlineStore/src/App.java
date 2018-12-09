@@ -80,7 +80,8 @@ public class App {
                     + "   3. View top 5 best selling items\n"
 					+ "   4. View my purchase history\n"
                     + "   5. Buy items\n"
-                    + "   6. Logout (customer logout)\n");
+					+ "   6. Cancel a transaction\n"
+                    + "   7. Logout (customer logout)\n");
 			int customerOption = in.nextInt();
 
 			switch (customerOption) {
@@ -100,6 +101,8 @@ public class App {
 			    buyItem(stmt);
 			    break;
 			case 6:
+			 	functionRequirement15(stmt);
+			case 7:
 				exitRequested = true;
 				break;
 			}
@@ -412,12 +415,47 @@ public class App {
 	 * Functional Requirement 15: As a customer I should be able to cancel an order.
 	 */
 	private static void functionRequirement15(Statement stmt) throws SQLException {
+		/*** THIS IS A DUPLICATE OF FR17 ***/
+		ResultSet rs;
+		Scanner in = new Scanner(System.in);
+		PreparedStatement preparedStatement;
 
+		System.out.println("What is your customer ID?");
+		int cid = in.nextInt();
+		String query = "SELECT transactionid, qtyordered, itemid ,itemprice, purchasedate, customerid, returnsYN FROM billofsale WHERE customerid = ?;";
 
+		preparedStatement = connection.prepareStatement(query);
+		preparedStatement.setInt(1,cid);
 
+		rs = preparedStatement.executeQuery();
+		printPurchaseHistory(rs);
+		/*** END DUPLICATE OF FR17 ***/
 
+		System.out.println("Please type in the transactionID you want to cancel.");
+		int tid = in.nextInt();
+		String query2 = "DELETE FROM billofsale WHERE (transactionid = ?);";
+		preparedStatement = connection.prepareStatement(query2);
+		preparedStatement.setInt(1,tid);
+		preparedStatement.executeUpdate();
 
+		System.out.println("Transaction " + tid + " Has been cancelled\n");
+	}
 
+	/** PRINT PURCHASE HISTORY **/
+	private static void printPurchaseHistory(ResultSet rs) throws SQLException {
+		System.out.format("%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n", "Transaction ID", "QTY", "Item ID", "Item Price", "Purchase Date", "CustomerID", "Returns?");
+		while (rs.next()) {
+			System.out.format("%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n",
+					rs.getString("transactionid"),
+					rs.getString("qtyordered"),
+					rs.getString("itemid"),
+					rs.getString("itemprice"),
+					rs.getString("purchasedate"),
+					rs.getString("customerid"),
+					rs.getString("returnsYN")
+			);
+		}
+		System.out.println();
 	}
 
 	/**
@@ -439,7 +477,7 @@ public class App {
 	 * TODO Functional Requirement 17: As a customer, I should be able to view my
 	 * purchase history.
 	 */
-	private static void functionRequirement17(Statement stmt) throws SQLException {
+	public static void functionRequirement17(Statement stmt) throws SQLException {
 		ResultSet rs;
 		Scanner in = new Scanner(System.in);
 		PreparedStatement preparedStatement;
@@ -453,19 +491,7 @@ public class App {
 
 		rs = preparedStatement.executeQuery();
 
-		System.out.format("%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n", "Transaction ID", "QTY", "Item ID", "Item Price", "Purchase Date", "CustomerID", "Returns?");
-		while (rs.next()) {
-			System.out.format("%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n",
-					rs.getString("transactionid"),
-					rs.getString("qtyordered"),
-					rs.getString("itemid"),
-					rs.getString("itemprice"),
-					rs.getString("purchasedate"),
-					rs.getString("customerid"),
-					rs.getString("returnsYN")
-			);
-		}
-		System.out.println();
+		printPurchaseHistory(rs);
 	}
 
 
@@ -525,11 +551,11 @@ public class App {
 	 */
 	private static void createProcedures(Statement stmt) throws SQLException
 	{
-		String queryDrop = "DROP PROCEDURE IF EXISTS archiveItems;";
+		String queryDrop = "DROP PROCEDURE IF EXISTS archivedCustomers;";
 		stmt.execute(queryDrop);
 
 		String createInParameterProcedure =
-				"CREATE PROCEDURE archiveCustomers (IN cutoffdate DATE)" +
+				"CREATE PROCEDURE archivedCustomers (IN cutoffdate DATE)" +
 						"BEGIN" +
 						"  INSERT INTO archivedcustomers " +
 						"  (SELECT * " +
