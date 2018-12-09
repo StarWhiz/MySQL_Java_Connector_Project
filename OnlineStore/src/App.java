@@ -2,8 +2,13 @@ import java.sql.*;
 import java.util.Scanner;
 
 /**
- * https://www.youtube.com/watch?v=NoPzqahrzp8
+ * TEAM RIT DATABASE PROJECT
+ * Course: CS157A 10:30 AM
+ * Written by: Tai Dao, Izzy Moriguchi, Rana Shamoun
+ *
+ * Note to instructor: Our database is on AWS so there's no need to worry about having to source a local data.sql file.
  */
+
 public class App {
 	private static Connection connection = null;
 	private static Statement stmt = null;
@@ -401,7 +406,6 @@ public class App {
 	 * Functional Requirement 15: As a customer I should be able to cancel an order.
 	 */
 	private static void functionRequirement15(Statement stmt) throws SQLException {
-		/*** THIS IS A DUPLICATE OF FR17 ***/
 		ResultSet rs;
 		Scanner in = new Scanner(System.in);
 		PreparedStatement preparedStatement;
@@ -415,7 +419,6 @@ public class App {
 
 		rs = preparedStatement.executeQuery();
 		printPurchaseHistory(rs);
-		/*** END DUPLICATE OF FR17 ***/
 
 		System.out.println("Please type in the transactionID you want to cancel.");
 		int tid = in.nextInt();
