@@ -678,14 +678,29 @@ CREATE TABLE `archivedCustomers` (
 );
 
 
+delimiter //
 
 CREATE TRIGGER transactionoccured
   AFTER INSERT ON billofsale
   FOR EACH ROW
+
+BEGIN
+
   UPDATE items
   SET    items.qtyinstock = items.qtyinstock - NEW.qtyordered
   WHERE  itemid = NEW.itemid;
 
+  UPDATE customers
+  SET totalNumOfPurchases = totalNumOfPurchases + 1
+  WHERE customers.customerid = NEW.customerid;
+
+  UPDATE customers
+  SET updatedAt = CURDATE()
+  WHERE customers.customerid = NEW.customerid;
+
+END//
+
+delimiter ;
 
 
 delimiter //
