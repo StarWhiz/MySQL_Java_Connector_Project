@@ -128,7 +128,6 @@ public class App {
 					+ "   9. Show most expensive item in inventory\n" + "   10. Show my first customer\n"
 					+ "   11. Show top 5 items that have the most stock\n"
 					+ "   12. Show the most inactive supplier (supplied the least amount of items)\n"
-					+ "   13. Show the most active supplier (supplied the highest amount of items)\n"
                     + "   14. Show all transactions\n"
 					+ "   15. Archive some customer data\n"
 					+ "   16. Show all customers\n"
@@ -175,7 +174,6 @@ public class App {
 				functionRequirement16(stmt);
 				break;
 			case 13:
-				functionRequirement15(stmt);
 				break;
             case 14:
                 showAllBillOfSale(stmt);
@@ -621,7 +619,7 @@ public class App {
                     rs.getString("itemprice"),
                     rs.getString("purchasedate"),
                     rs.getString("customerid"),
-                    rs.getString("return?"));
+                    rs.getString("returnsYN"));
         }
 
         System.out.println("--------------------------------------------------------" +
