@@ -524,27 +524,27 @@ public class App {
         System.out.println();
     }
 
-    /**
-     * Creates a stored procedure
-     * @throws SQLException
-     */
-    private static void createProcedures(Statement stmt) throws SQLException
-    {
-        String queryDrop = "DROP PROCEDURE IF EXISTS archiveItems;";
-        stmt.execute(queryDrop);
+	/**
+	 * Creates a stored procedure
+	 * @throws SQLException
+	 */
+	private static void createProcedures(Statement stmt) throws SQLException
+	{
+		String queryDrop = "DROP PROCEDURE IF EXISTS archiveItems;";
+		stmt.execute(queryDrop);
 
-        String createInParameterProcedure =
-                "CREATE PROCEDURE archiveItems (IN cutoffdate DATE)" +
-                "BEGIN" +
-                "  INSERT INTO archivedItems " +
-                "  (SELECT * " +
-                "   FROM   items " +
-                "   WHERE  updatedat >= cutoffdate);" +
-                "  DELETE FROM items " +
-                "  WHERE  itemid IN (SELECT * FROM archivedItems); " +
-                "END";
-        stmt.executeUpdate(createInParameterProcedure);
-    }
+		String createInParameterProcedure =
+				"CREATE PROCEDURE archiveCustomers (IN cutoffdate DATE)" +
+						"BEGIN" +
+						"  INSERT INTO archivedcustomers " +
+						"  (SELECT * " +
+						"   FROM   customers " +
+						"   WHERE  updatedAt >= cutoffdate);" +
+						"  DELETE FROM customers " +
+						"  WHERE  itemid IN (SELECT * FROM archivedItems); " +
+						"END";
+		stmt.executeUpdate(createInParameterProcedure);
+	}
 
     /**
      * Calls the archiveItems function and get the result
