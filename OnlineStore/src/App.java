@@ -409,19 +409,15 @@ public class App {
 	}
 
 	/**
-	 * Functional Requirement 15: As a business manager, I should be able to see
-	 * which supplier provides me with the highest quantity ordered.
+	 * Functional Requirement 15: As a customer I should be able to cancel an order.
 	 */
 	private static void functionRequirement15(Statement stmt) throws SQLException {
-		ResultSet rs;
-		rs = stmt.executeQuery(
-				"SELECT S1.suppliername,\n" + "Sum(S1.qtyordered) AS highestQty\n" + "FROM   suppliers S1\n"
-						+ "GROUP BY S1.suppliername \n" + "ORDER BY highestQty DESC \n" + "LIMIT 1;\n");
-		System.out.format("%-15s%-30s\n", "Supplier Name", "Quantity");
-		while (rs.next()) {
-			System.out.format("%-15s%-30s\n", rs.getString("S1.suppliername"), rs.getString("highestQty"));
-		}
-		System.out.println();
+
+
+
+
+
+
 	}
 
 	/**
@@ -474,8 +470,7 @@ public class App {
 
 
 	/**
-	 * Functional Requirement 18: As a customer, I should be able to view my
-	 * purchase history.
+	 * Functional Requirement 18: As a customer, I should be able to buy an item.
 	 */
 	private static void buyItem(Statement stmt) throws SQLException {
         ResultSet rs;
