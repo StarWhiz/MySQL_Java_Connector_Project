@@ -76,12 +76,11 @@ public class App {
 			System.out.println("You are a customer.\n");
 			System.out.println("What would you like to do today?\n"
                     + "   1. View top 5 rated items. \n" //
-					+ "   2. View all available and unavailable items\n"
-                    + "   3. View top 5 best selling items\n"
-					+ "   4. View my purchase history\n"
-                    + "   5. Buy items\n"
-					+ "   6. Cancel a transaction\n"
-                    + "   7. Logout (customer logout)\n");
+                    + "   2. View top 5 best selling items\n"
+					+ "   3. View my purchase history\n"
+                    + "   4. Buy items\n"
+					+ "   5. Cancel a transaction\n"
+                    + "   6. Logout (customer logout)\n");
 			int customerOption = in.nextInt();
 
 			switch (customerOption) {
@@ -89,20 +88,17 @@ public class App {
 				functionRequirement10(stmt);
 				break;
 			case 2:
-				functionRequirement11(stmt);
-				break;
-			case 3:
 				functionRequirement14(stmt);
 				break;
-			case 4:
+			case 3:
 				functionRequirement17(stmt);
 				break;
-			case 5:
+			case 4:
 			    buyItem(stmt);
 			    break;
-			case 6:
+			case 5:
 			 	functionRequirement15(stmt);
-			case 7:
+			case 6:
 				exitRequested = true;
 				break;
 			}
@@ -349,16 +345,6 @@ public class App {
 			System.out.format("%-15s\n", rs.getString("avgRating"));
 		}
 		System.out.println();
-	}
-
-	/**
-	 * TODO Functional Requirement 11: As a customer, I should be able to view all
-	 * available items (1 or more qtyinStock) and all unavailable items (0
-	 * qtyinStock) separately
-	 */
-	private static void functionRequirement11(Statement stmt) throws SQLException {
-		ResultSet rs;
-		System.out.println("NOT YET IMPLEMENTED");
 	}
 
 	/**
