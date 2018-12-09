@@ -149,7 +149,7 @@ CREATE TABLE `billofsale` (
   `returnsYN` varchar(3) DEFAULT "no",
   PRIMARY KEY (`transactionid`),
   FOREIGN KEY (`itemid`) REFERENCES `items` (`itemid`),
-  FOREIGN KEY (`customerid`) REFERENCES `customers` (`customerid`)
+  FOREIGN KEY (`customerid`) REFERENCES `customers` (`customerid`) ON DELETE SET NULL
 );
 ALTER TABLE billofsale AUTO_INCREMENT = 1150;
 
@@ -513,7 +513,7 @@ CREATE TABLE `reviews` (
   `rating` int(11) DEFAULT NULL,
   PRIMARY KEY (`reviewid`),
   FOREIGN KEY (`itemid`) REFERENCES `items` (`itemid`),
-  FOREIGN KEY (`customerid`) REFERENCES `customers` (`customerid`)
+  FOREIGN KEY (`customerid`) REFERENCES `customers` (`customerid`) ON DELETE SET NULL
 ) ;
 
 INSERT INTO `reviews` VALUES ('477','2016-01-08','5158','4437','5');
