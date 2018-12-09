@@ -130,8 +130,10 @@ public class App {
 					+ "   12. Show the most inactive supplier (supplied the least amount of items)\n"
 					+ "   13. Show the most active supplier (supplied the highest amount of items)\n"
                     + "   14. Show all transactions\n"
-					+ "   15. Archive some data\n"
-					+ "   16. Exit\n");
+					+ "   15. Archive some customer data\n"
+					+ "   16. Show all customers\n"
+					+ "   17. Show archived data\n"
+					+ "   18. Exit\n");
 
 			int businessOwnerOption = in.nextInt();
 
@@ -179,9 +181,15 @@ public class App {
                 showAllBillOfSale(stmt);
                 break;
 			case 15:
-				archiveItems();
+				archive();
 				break;
 			case 16:
+				showAllCustomers(stmt);
+				break;
+			case 17:
+				showCustomerArchive(stmt);
+				break;
+			case 18:
 				exitRequested = true;
 				break;
 			}
@@ -540,53 +548,41 @@ public class App {
 	 */
 	private static void createProcedures(Statement stmt) throws SQLException
 	{
-		String queryDrop = "DROP PROCEDURE IF EXISTS archivedCustomers;";
+		String queryDrop = "DROP PROCEDURE IF EXISTS archiveCustomers;";
 		stmt.execute(queryDrop);
 
 		String createInParameterProcedure =
-				"CREATE PROCEDURE archivedCustomers (IN cutoffdate DATE)" +
+				"CREATE PROCEDURE archiveCustomers (IN cutoffdate DATE)" +
 						"BEGIN" +
-						"  INSERT INTO archivedcustomers " +
+						"  INSERT INTO archivedCustomers " +
 						"  (SELECT * " +
 						"   FROM   customers " +
-						"   WHERE  updatedAt >= cutoffdate);" +
+						"   WHERE  updatedAt <= cutoffdate);" +
 						"  DELETE FROM customers " +
-						"  WHERE  itemid IN (SELECT * FROM archivedItems); " +
+						"  WHERE  customers.customerid IN (SELECT archivedCustomers.customerid FROM archivedCustomers); " +
 						"END";
 		stmt.executeUpdate(createInParameterProcedure);
 	}
 
+
     /**
-     * Calls the archiveItems function and get the result
+	 * Calls the archiveCustomers function for customers and get the result
      * @throws SQLException
      */
-	private static void archiveItems() throws SQLException {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Specify the cutoff date that you want to archive from in 'yyyy-mm-dd' format");
-        String cutoffDate = in.next();
+	private static void archive() throws SQLException {
+		Scanner in = new Scanner(System.in);
+		System.out.println("Specify the cutoff date that you want to archive from in 'yyyy-mm-dd' format");
+		String cutoffDate = in.next();
 
 		CallableStatement cstmt = null;
-        String sql = "{call archiveItems(?)}";
-        cstmt = connection.prepareCall(sql);
-        cstmt.setDate(1, Date.valueOf(cutoffDate));
-        ResultSet rs = cstmt.executeQuery();
-        printResultSet(rs);
+		String sql = "{call archiveCustomers(?)}";
+		cstmt = connection.prepareCall(sql);
+		cstmt.setDate(1, Date.valueOf(cutoffDate));
+		cstmt.executeQuery();
+		System.out.println("Customers who have not updated after " + cutoffDate + " have been moved to archive.");
 	}
 
-    /**
-     * Print out the result of archives
-     * @param rs
-     * @throws SQLException
-     */
-    private static void printResultSet(ResultSet rs) throws SQLException
-    {
-        while(rs.next())
-        {
-            int id = rs.getInt("itemid");
-            String name = rs.getString("itemname");
-            System.out.println("Item ID:" + id + " Item Name:" + name);
-        }
-    }
+
 
     /**
      * Print out all the items in items table
@@ -632,4 +628,35 @@ public class App {
                 "-----------------------------------------------------------------------");
         System.out.println();
     }
+
+	private static void showAllCustomers(Statement stmt) throws SQLException {
+		System.out.println("Customer data");
+		System.out.println("-------------------------------------");
+		ResultSet rs = stmt.executeQuery("SELECT customername,customerid,totalNumOfPurchases,updatedAt FROM customers;");
+		System.out.format("%-40s%-30s%-30s%-30s\n", "Customer name", "Customer id", "Total Number of Purchases",
+				"UpdatedAt");
+		while (rs.next()) {
+			System.out.format("%-40s%-30s%-30s%-30s\n",
+					rs.getString("customername"),
+					rs.getString("customerid"),
+					rs.getString("totalNumOfPurchases"),
+					rs.getString("updatedAt"));
+		}
+	}
+
+	private static void showCustomerArchive(Statement stmt) throws SQLException {
+		System.out.println("Archived customer data");
+		System.out.println("-----------------------------------");
+		ResultSet rs = stmt.executeQuery("SELECT customername,customerid,totalNumOfPurchases,updatedAt FROM " +
+				"archivedCustomers;");
+		System.out.format("%-40s%-30s%-30s%-30s\n", "Customer name", "Customer id", "Total Number of Purchases",
+				"UpdatedAt");
+		while (rs.next()) {
+			System.out.format("%-40s%-30s%-30s%-30s\n",
+					rs.getString("customername"),
+					rs.getString("customerid"),
+					rs.getString("totalNumOfPurchases"),
+					rs.getString("updatedAt"));
+		}
+	}
 }
