@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `suppliers`;
 DROP TABLE IF EXISTS `reviews`;
 DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `items`;
-DROP TABLE IF EXISTS `archivedItems`;
+DROP TABLE IF EXISTS `archivedCustomers`;
 
 DROP TRIGGER IF EXISTS transactionoccured;
 DROP TRIGGER IF EXISTS deletebillofsale;
