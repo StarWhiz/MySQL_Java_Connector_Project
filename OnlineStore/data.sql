@@ -146,7 +146,7 @@ CREATE TABLE `billofsale` (
   `itemprice` float(10,2) DEFAULT NULL,
   `purchasedate` date DEFAULT NULL,
   `customerid` int(11) DEFAULT NULL,
-  `return?` varchar(3) DEFAULT "no",
+  `returnsYN` varchar(3) DEFAULT "no",
   PRIMARY KEY (`transactionid`),
   FOREIGN KEY (`itemid`) REFERENCES `items` (`itemid`),
   FOREIGN KEY (`customerid`) REFERENCES `customers` (`customerid`)

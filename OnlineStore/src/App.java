@@ -445,9 +445,38 @@ public class App {
 	 */
 	private static void functionRequirement17(Statement stmt) throws SQLException {
 		ResultSet rs;
-		System.out.println("NOT YET IMPLEMENTED");
+		Scanner in = new Scanner(System.in);
+		PreparedStatement preparedStatement;
+
+		System.out.println("What is your customer ID?");
+		int cid = in.nextInt();
+		String query = "SELECT transactionid, qtyordered, itemid ,itemprice, purchasedate, customerid, returnsYN FROM billofsale WHERE customerid = ?;";
+
+		preparedStatement = connection.prepareStatement(query);
+		preparedStatement.setInt(1,cid);
+
+		rs = preparedStatement.executeQuery();
+
+		System.out.format("%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n", "Transaction ID", "QTY", "Item ID", "Item Price", "Purchase Date", "CustomerID", "Returns?");
+		while (rs.next()) {
+			System.out.format("%-15s%-15s%-15s%-15s%-15s%-15s%-15s\n",
+					rs.getString("transactionid"),
+					rs.getString("qtyordered"),
+					rs.getString("itemid"),
+					rs.getString("itemprice"),
+					rs.getString("purchasedate"),
+					rs.getString("customerid"),
+					rs.getString("returnsYN")
+			);
+		}
+		System.out.println();
 	}
 
+
+	/**
+	 * Functional Requirement 18: As a customer, I should be able to view my
+	 * purchase history.
+	 */
 	private static void buyItem(Statement stmt) throws SQLException {
         ResultSet rs;
         String query;
