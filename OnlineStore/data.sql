@@ -669,13 +669,12 @@ INSERT INTO `reviews` VALUES ('991394','2015-05-21','9456','8364','0');
 
 
 
-CREATE TABLE `archivedItems` (
-  `itemid` int(11) NOT NULL,
-  `itemname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `itemprice` float(10,2) DEFAULT NULL,
-  `qtyinstock` int(11) DEFAULT NULL,
+CREATE TABLE `archivedCustomers` (
+  `customername` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `customerid` int(11) NOT NULL,
+  `totalNumOfPurchases` int(11) DEFAULT NULL,
   `updatedAt` date DEFAULT NULL,
-  PRIMARY KEY (`itemid`)
+  PRIMARY KEY (`customerid`)
 );
 
 
