@@ -125,8 +125,9 @@ public class App {
 					+ "   11. Show top 5 items that have the most stock\n"
 					+ "   12. Show the most inactive supplier (supplied the least amount of items)\n"
 					+ "   13. Show the most active supplier (supplied the highest amount of items)\n"
-					+ "   14. Archive some data\n"
-					+ "   15. Exit\n");
+                    + "   14. Show all transactions\n"
+					+ "   15. Archive some data\n"
+					+ "   16. Exit\n");
 
 			int businessOwnerOption = in.nextInt();
 
@@ -170,10 +171,13 @@ public class App {
 			case 13:
 				functionRequirement15(stmt);
 				break;
-			case 14:
+            case 14:
+                showAllBillOfSale(stmt);
+                break;
+			case 15:
 				archiveItems();
 				break;
-			case 15:
+			case 16:
 				exitRequested = true;
 				break;
 			}
@@ -489,7 +493,6 @@ public class App {
         System.out.println();
         System.out.println("Thank you for your purchase");
         System.out.println();
-        showAllBillOfSale(stmt);
     }
 
     /**
@@ -564,17 +567,19 @@ public class App {
     }
 
     /**
-     * TODO: This is for debugging purpose. Needs to be deleted before submission
+     * Print out all the transactions in billofsale table
      * @param stmt
      * @throws SQLException
      */
     private static void showAllBillOfSale(Statement stmt) throws SQLException {
         ResultSet rs = stmt.executeQuery("SELECT * FROM billofsale;");
-        System.out.format("%-20s%-20s%-30s%-30s%-30s%-30s\n",
-                "Transaction Id", "Item ID", "Qty ordered", "Item price" +
+        System.out.format("%-20s%-20s%-20s%-20s%-20s%-20s%-20s\n",
+                "Transaction Id", "Item ID", "Qty ordered", "Item price",
                 "Purchase date", "Customer id" , "return?");
+        System.out.println("--------------------------------------------------------" +
+                "-----------------------------------------------------------------------");
         while (rs.next()) {
-            System.out.format("%-20s%-20s%-30s%-30s%-30s%-30s\n",
+            System.out.format("%-20s%-20s%-20s%-20s%-20s%-20s%-20s\n",
                     rs.getString("transactionid"),
                     rs.getString("itemid"),
                     rs.getString("qtyordered"),
@@ -583,5 +588,9 @@ public class App {
                     rs.getString("customerid"),
                     rs.getString("return?"));
         }
+
+        System.out.println("--------------------------------------------------------" +
+                "-----------------------------------------------------------------------");
+        System.out.println();
     }
 }
