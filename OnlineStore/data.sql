@@ -10,65 +10,69 @@ DROP TABLE IF EXISTS `customers`;
 DROP TABLE IF EXISTS `items`;
 DROP TABLE IF EXISTS `archivedItems`;
 
+DROP TRIGGER IF EXISTS transactionoccured;
+DROP TRIGGER IF EXISTS deletebillofsale;
+
+
+
 CREATE TABLE `items` (
   `itemid` int(11) NOT NULL,
   `itemname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `itemprice` float(10,2) DEFAULT NULL,
   `qtyinstock` int(11) DEFAULT NULL,
-  `updatedAt` date DEFAULT NULL,
   PRIMARY KEY (`itemid`)
 );
 
-INSERT INTO `items` VALUES (539, 'Antec DF500 Case', '54.49',2,'2016-01-02');
-INSERT INTO `items` VALUES (915, 'AMD Ryzen 1700X', '149.99',20,'2018-10-14');
-INSERT INTO `items` VALUES (1296, 'NZXT H500i Case', '84.99',84,'2014-11-27');
-INSERT INTO `items` VALUES (1468, 'Super Mario Party', '59.99',24,'2018-06-13');
-INSERT INTO `items` VALUES (1939, 'Nail clippers', '0.89',37,'2017-03-07');
-INSERT INTO `items` VALUES (2106, '16GB DDR4 RAM', '99.99',7,'2015-12-18');
-INSERT INTO `items` VALUES (2223, 'ASRock AB350 Mobo', '89.99',70,'2018-06-06');
-INSERT INTO `items` VALUES (2366, 'Black Ops 4', '35.99',52,'2015-11-27');
-INSERT INTO `items` VALUES (2701, 'Intel i5-9600k', '249.00',3,'2017-03-22');
-INSERT INTO `items` VALUES (2895, 'TP-Link C59 Router', '9.99',17,'2018-05-14');
-INSERT INTO `items` VALUES (3415, 'Corsair RM650x PSU', '64.99',5,'2018-01-28');
-INSERT INTO `items` VALUES (3616, '6FT HDMI Cable', '5.99',16,'2015-05-29');
-INSERT INTO `items` VALUES (3691, 'Intel 545s 256GB SSD', '39.99',49,'2017-11-17');
-INSERT INTO `items` VALUES (3960, 'Logitech G203 Mouse', '15.50',21,'2014-02-13');
-INSERT INTO `items` VALUES (4106, 'Radeon R7 360 GPU', '25.99',65,'2016-08-10');
-INSERT INTO `items` VALUES (4384, 'Acer Aspire E Laptop', '499.99',85,'2017-04-24');
-INSERT INTO `items` VALUES (4822, 'Surface Pro 6', '799.95',91,'2016-03-16');
-INSERT INTO `items` VALUES (5027, 'Aigo Halo LED 120mm Fan', '9.99',40,'2018-02-20');
-INSERT INTO `items` VALUES (5158, 'Senzer Q10 Wireless BT Headphones', '43.99',11,'2015-02-23');
-INSERT INTO `items` VALUES (5301, 'Pandemic Board Game', '19.99',55,'2017-12-14');
-INSERT INTO `items` VALUES (5380, 'Koss PortaPro Headphones', '22.99',0,'2018-02-15');
-INSERT INTO `items` VALUES (5390, 'Brother Label Maker', '4.99',55,'2018-07-01');
-INSERT INTO `items` VALUES (5404, 'Tide Pods Detergent 35CT', '9.99',40,'2017-09-25');
-INSERT INTO `items` VALUES (5713, 'Samsung 16GB Flash Drive', '2.25',45,'2018-06-26');
-INSERT INTO `items` VALUES (5935, 'Samsung 128GB Flash Drive', '24.99',45,'2018-01-05');
-INSERT INTO `items` VALUES (6086, 'Samsung Evo 860 500GB SSD', '65.99',76,'2017-09-20');
-INSERT INTO `items` VALUES (6204, 'AUKEY Gaming Mouse Pad', '19.99',29,'2014-12-08');
-INSERT INTO `items` VALUES (6342, 'Tire Pressure Guage', '5.49',62,'2017-05-31');
-INSERT INTO `items` VALUES (6446, 'ViewSonic 24in 144Hz Monitor', '180.99',73,'2014-03-04');
-INSERT INTO `items` VALUES (6719, 'Titanium Spork', '6.97',90,'2016-12-16');
-INSERT INTO `items` VALUES (6964, 'LED Lantern', '3.95',57,'2016-05-30');
-INSERT INTO `items` VALUES (7465, 'Platypus Water Bottle', '7.49',99,'2017-09-07');
-INSERT INTO `items` VALUES (7472, 'SunJoe SPX3000 Pressure Washer', '149.00',49,'2016-05-27');
-INSERT INTO `items` VALUES (7565, 'Nintendo Switch', '299.99',59,'2018-06-28');
-INSERT INTO `items` VALUES (7819, 'Sony Playstation 4 Slim', '199.95',5,'2015-03-04');
-INSERT INTO `items` VALUES (7864, 'Xbox One X', '399.99',45,'2018-01-11');
-INSERT INTO `items` VALUES (7865, 'Iphone Xs', '999.89',72,'2015-08-29');
-INSERT INTO `items` VALUES (7932, '12-Pack Pepsi', '2.67',46,'2016-08-18');
-INSERT INTO `items` VALUES (7976, 'Corsair SF450 PSU', '73.25',93,'2015-10-25');
-INSERT INTO `items` VALUES (8073, 'Arctic MX-4 Thermalpaste', '3.96',74,'2016-09-10');
-INSERT INTO `items` VALUES (8417, 'GIGABYTE GTX 1070Ti', '349.45',71,'2017-01-09');
-INSERT INTO `items` VALUES (8607, 'Nextbit Robin Phone', '114.99',55,'2015-07-11');
-INSERT INTO `items` VALUES (8661, 'Surface Pro 3 256GB 8GB', '429.99',83,'2014-06-02');
-INSERT INTO `items` VALUES (9033, 'Chopsticks 24Pairs', '5.45',14,'2018-05-07');
-INSERT INTO `items` VALUES (9236, 'Cup Noodles 24pk', '4.24',87,'2014-08-25');
-INSERT INTO `items` VALUES (9414, 'Bug-A-Salt Gun', '24.99',17,'2014-12-22');
-INSERT INTO `items` VALUES (9456, 'Thai Tea Boba', '4.75',41,'2016-07-19');
-INSERT INTO `items` VALUES (9576, 'Zalman CPU Cooler', '9.51',91,'2018-03-07');
-INSERT INTO `items` VALUES (9628, 'EVGA GTX 970', '115.25',84,'2018-10-10');
-INSERT INTO `items` VALUES (9864, 'GL.inet SLATE AR750S Router', '62.99',31,'2014-07-20');
+INSERT INTO `items` VALUES (539, 'Antec DF500 Case', '54.49',2);
+INSERT INTO `items` VALUES (915, 'AMD Ryzen 1700X', '149.99',20);
+INSERT INTO `items` VALUES (1296, 'NZXT H500i Case', '84.99',84);
+INSERT INTO `items` VALUES (1468, 'Super Mario Party', '59.99',24);
+INSERT INTO `items` VALUES (1939, 'Nail clippers', '0.89',37);
+INSERT INTO `items` VALUES (2106, '16GB DDR4 RAM', '99.99',7);
+INSERT INTO `items` VALUES (2223, 'ASRock AB350 Mobo', '89.99',70);
+INSERT INTO `items` VALUES (2366, 'Black Ops 4', '35.99',52);
+INSERT INTO `items` VALUES (2701, 'Intel i5-9600k', '249.00',3);
+INSERT INTO `items` VALUES (2895, 'TP-Link C59 Router', '9.99',17);
+INSERT INTO `items` VALUES (3415, 'Corsair RM650x PSU', '64.99',5);
+INSERT INTO `items` VALUES (3616, '6FT HDMI Cable', '5.99',16);
+INSERT INTO `items` VALUES (3691, 'Intel 545s 256GB SSD', '39.99',49);
+INSERT INTO `items` VALUES (3960, 'Logitech G203 Mouse', '15.50',21);
+INSERT INTO `items` VALUES (4106, 'Radeon R7 360 GPU', '25.99',65);
+INSERT INTO `items` VALUES (4384, 'Acer Aspire E Laptop', '499.99',85);
+INSERT INTO `items` VALUES (4822, 'Surface Pro 6', '799.95',91);
+INSERT INTO `items` VALUES (5027, 'Aigo Halo LED 120mm Fan', '9.99',40);
+INSERT INTO `items` VALUES (5158, 'Senzer Q10 Wireless BT Headphones', '43.99',11);
+INSERT INTO `items` VALUES (5301, 'Pandemic Board Game', '19.99',55);
+INSERT INTO `items` VALUES (5380, 'Koss PortaPro Headphones', '22.99',0);
+INSERT INTO `items` VALUES (5390, 'Brother Label Maker', '4.99',55);
+INSERT INTO `items` VALUES (5404, 'Tide Pods Detergent 35CT', '9.99',40);
+INSERT INTO `items` VALUES (5713, 'Samsung 16GB Flash Drive', '2.25',45);
+INSERT INTO `items` VALUES (5935, 'Samsung 128GB Flash Drive', '24.99',45);
+INSERT INTO `items` VALUES (6086, 'Samsung Evo 860 500GB SSD', '65.99',76);
+INSERT INTO `items` VALUES (6204, 'AUKEY Gaming Mouse Pad', '19.99',29);
+INSERT INTO `items` VALUES (6342, 'Tire Pressure Guage', '5.49',62);
+INSERT INTO `items` VALUES (6446, 'ViewSonic 24in 144Hz Monitor', '180.99',73);
+INSERT INTO `items` VALUES (6719, 'Titanium Spork', '6.97',90);
+INSERT INTO `items` VALUES (6964, 'LED Lantern', '3.95',57);
+INSERT INTO `items` VALUES (7465, 'Platypus Water Bottle', '7.49',99);
+INSERT INTO `items` VALUES (7472, 'SunJoe SPX3000 Pressure Washer', '149.00',49);
+INSERT INTO `items` VALUES (7565, 'Nintendo Switch', '299.99',59);
+INSERT INTO `items` VALUES (7819, 'Sony Playstation 4 Slim', '199.95',5);
+INSERT INTO `items` VALUES (7864, 'Xbox One X', '399.99',45);
+INSERT INTO `items` VALUES (7865, 'Iphone Xs', '999.89',72);
+INSERT INTO `items` VALUES (7932, '12-Pack Pepsi', '2.67',46);
+INSERT INTO `items` VALUES (7976, 'Corsair SF450 PSU', '73.25',93);
+INSERT INTO `items` VALUES (8073, 'Arctic MX-4 Thermalpaste', '3.96',74);
+INSERT INTO `items` VALUES (8417, 'GIGABYTE GTX 1070Ti', '349.45',71);
+INSERT INTO `items` VALUES (8607, 'Nextbit Robin Phone', '114.99',55);
+INSERT INTO `items` VALUES (8661, 'Surface Pro 3 256GB 8GB', '429.99',83);
+INSERT INTO `items` VALUES (9033, 'Chopsticks 24Pairs', '5.45',14);
+INSERT INTO `items` VALUES (9236, 'Cup Noodles 24pk', '4.24',87);
+INSERT INTO `items` VALUES (9414, 'Bug-A-Salt Gun', '24.99',17);
+INSERT INTO `items` VALUES (9456, 'Thai Tea Boba', '4.75',41);
+INSERT INTO `items` VALUES (9576, 'Zalman CPU Cooler', '9.51',91);
+INSERT INTO `items` VALUES (9628, 'EVGA GTX 970', '115.25',84);
+INSERT INTO `items` VALUES (9864, 'GL.inet SLATE AR750S Router', '62.99',31);
 
 
 
@@ -76,59 +80,62 @@ INSERT INTO `items` VALUES (9864, 'GL.inet SLATE AR750S Router', '62.99',31,'201
 CREATE TABLE `customers` (
   `customername` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `customerid` int(11) NOT NULL,
+  `totalNumOfPurchases` int(11) DEFAULT NULL,
+  `updatedAt` date DEFAULT NULL,
   PRIMARY KEY (`customerid`)
 );
 
-INSERT INTO `customers` VALUES ('Alysha Wisozk', 76);
-INSERT INTO `customers` VALUES ('Ezra Emmerich III', 181);
-INSERT INTO `customers` VALUES ('Prof. Darian Paucek DDS', 215);
-INSERT INTO `customers` VALUES ('Prof. Lilliana Schroeder I', 331);
-INSERT INTO `customers` VALUES ('Ali Hoeger', 1031);
-INSERT INTO `customers` VALUES ('Dr. Salvador Kshlerin', 1078);
-INSERT INTO `customers` VALUES ('Dr. Reece West', 1174);
-INSERT INTO `customers` VALUES ('Andres Boyer', 1184);
-INSERT INTO `customers` VALUES ('Miss Brenna Hyatt MD', 1389);
-INSERT INTO `customers` VALUES ('Odell Schulist', 1582);
-INSERT INTO `customers` VALUES ('Christop Reichel PhD', 1806);
-INSERT INTO `customers` VALUES ('Providenci Hayes', 2030);
-INSERT INTO `customers` VALUES ('Magali Reichel', 2060);
-INSERT INTO `customers` VALUES ('Addie Stehr', 3192);
-INSERT INTO `customers` VALUES ('Antoinette Powlowski', 3253);
-INSERT INTO `customers` VALUES ('Uriel King', 3643);
-INSERT INTO `customers` VALUES ('Dr. Devyn Cormier', 3658);
-INSERT INTO `customers` VALUES ('Anne Cummings III', 4101);
-INSERT INTO `customers` VALUES ('Federico Wintheiser', 4437);
-INSERT INTO `customers` VALUES ('Miss Kara Nikolaus III', 4549);
-INSERT INTO `customers` VALUES ('Lora Monahan', 4746);
-INSERT INTO `customers` VALUES ('Ebony Hayes', 4955);
-INSERT INTO `customers` VALUES ('Walker Bartoletti', 4980);
-INSERT INTO `customers` VALUES ('Mohammad Mosciski', 5003);
-INSERT INTO `customers` VALUES ('Prof. Alek Kris', 5017);
-INSERT INTO `customers` VALUES ('Donnie Johnston', 5261);
-INSERT INTO `customers` VALUES ('Aric Deckow PhD', 5355);
-INSERT INTO `customers` VALUES ('Keith Kutch Jr.', 5422);
-INSERT INTO `customers` VALUES ('Jimmy Ritchie', 5919);
-INSERT INTO `customers` VALUES ('Amani Leannon', 6201);
-INSERT INTO `customers` VALUES ('Santa Haag', 6282);
-INSERT INTO `customers` VALUES ('Marisol Moen', 6412);
-INSERT INTO `customers` VALUES ('Pink Hahn Sr.', 6654);
-INSERT INTO `customers` VALUES ('Tyrique Herzog Jr.', 6757);
-INSERT INTO `customers` VALUES ('Ms. Allene O\'Connell MD', 6843);
-INSERT INTO `customers` VALUES ('Prof. Angelica Boyle V', 6920);
-INSERT INTO `customers` VALUES ('Destini Krajcik', 7142);
-INSERT INTO `customers` VALUES ('Kelley Brakus', 7237);
-INSERT INTO `customers` VALUES ('Prof. Leanne Senger', 7397);
-INSERT INTO `customers` VALUES ('Pink Jacobs III', 7484);
-INSERT INTO `customers` VALUES ('Ms. Dejah O\'Conner DDS', 7503);
-INSERT INTO `customers` VALUES ('Mrs. Tomasa Schuster', 7523);
-INSERT INTO `customers` VALUES ('Leonel Kutch', 7665);
-INSERT INTO `customers` VALUES ('Josephine Runolfsson', 7929);
-INSERT INTO `customers` VALUES ('Amy Veum', 8002);
-INSERT INTO `customers` VALUES ('Mr. Reed Streich', 8148);
-INSERT INTO `customers` VALUES ('Enrico Goldner', 8364);
-INSERT INTO `customers` VALUES ('Jannie Jacobson', 8644);
-INSERT INTO `customers` VALUES ('Telly Herman', 9137);
-INSERT INTO `customers` VALUES ('Robbie Bartell', 9813);
+INSERT INTO `customers` VALUES ('Alysha Wisozk',76,11,'2016-01-13');
+INSERT INTO `customers` VALUES ('Ezra Emmerich III',181,13,'2017-07-19');
+INSERT INTO `customers` VALUES ('Prof. Darian Paucek DDS',215,18,'2016-06-08');
+INSERT INTO `customers` VALUES ('Prof. Lilliana Schroeder I',331,11,'2018-01-07');
+INSERT INTO `customers` VALUES ('Ali Hoeger',1031,20,'2016-10-29');
+INSERT INTO `customers` VALUES ('Dr. Salvador Kshlerin',1078,16,'2018-10-03');
+INSERT INTO `customers` VALUES ('Dr. Reece West',1174,20,'2017-05-24');
+INSERT INTO `customers` VALUES ('Andres Boyer',1184,16,'2018-02-14');
+INSERT INTO `customers` VALUES ('Miss Brenna Hyatt MD',1389,26,'2018-04-14');
+INSERT INTO `customers` VALUES ('Odell Schulist',1582,15,'2018-04-06');
+INSERT INTO `customers` VALUES ('Christop Reichel PhD',1806,14,'2018-08-14');
+INSERT INTO `customers` VALUES ('Providenci Hayes',2030,7,'2017-11-29');
+INSERT INTO `customers` VALUES ('Magali Reichel',2060,18,'2018-07-26');
+INSERT INTO `customers` VALUES ('Addie Stehr',3192,16,'2017-04-26');
+INSERT INTO `customers` VALUES ('Antoinette Powlowski',3253,9,'2018-08-01');
+INSERT INTO `customers` VALUES ('Uriel King',3643,11,'2017-02-21');
+INSERT INTO `customers` VALUES ('Dr. Devyn Cormier',3658,14,'2018-05-14');
+INSERT INTO `customers` VALUES ('Anne Cummings III',4101,19,'2018-11-13');
+INSERT INTO `customers` VALUES ('Federico Wintheiser',4437,10,'2018-09-10');
+INSERT INTO `customers` VALUES ('Miss Kara Nikolaus III',4549,13,'2018-04-10');
+INSERT INTO `customers` VALUES ('Lora Monahan',4746,18,'2016-02-04');
+INSERT INTO `customers` VALUES ('Ebony Hayes',4955,19,'2018-06-09');
+INSERT INTO `customers` VALUES ('Walker Bartoletti',4980,11,'2018-08-26');
+INSERT INTO `customers` VALUES ('Mohammad Mosciski',5003,25,'2018-02-06');
+INSERT INTO `customers` VALUES ('Prof. Alek Kris',5017,19,'2017-04-24');
+INSERT INTO `customers` VALUES ('Donnie Johnston',5261,20,'2018-07-17');
+INSERT INTO `customers` VALUES ('Aric Deckow PhD',5355,16,'2016-06-17');
+INSERT INTO `customers` VALUES ('Keith Kutch Jr.',5422,18,'2018-10-08');
+INSERT INTO `customers` VALUES ('Jimmy Ritchie',5919,11,'2016-04-01');
+INSERT INTO `customers` VALUES ('Amani Leannon',6201,12,'2016-10-22');
+INSERT INTO `customers` VALUES ('Santa Haag',6282,21,'2017-03-12');
+INSERT INTO `customers` VALUES ('Marisol Moen',6412,14,'2016-06-27');
+INSERT INTO `customers` VALUES ('Pink Hahn Sr.',6654,21,'2018-10-03');
+INSERT INTO `customers` VALUES ('Tyrique Herzog Jr.',6757,9,'2017-08-02');
+INSERT INTO `customers` VALUES ('Ms. Allene O\'Connell MD',6843,16,'2016-11-16');
+INSERT INTO `customers` VALUES ('Prof. Angelica Boyle V',6920,14,'2017-11-25');
+INSERT INTO `customers` VALUES ('Destini Krajcik',7142,14,'2018-01-31');
+INSERT INTO `customers` VALUES ('Kelley Brakus',7237,20,'2018-06-08');
+INSERT INTO `customers` VALUES ('Prof. Leanne Senger',7397,13,'2016-04-16');
+INSERT INTO `customers` VALUES ('Pink Jacobs III',7484,11,'2017-12-09');
+INSERT INTO `customers` VALUES ('Ms. Dejah O\'Conner DDS',7503,21,'2017-11-06');
+INSERT INTO `customers` VALUES ('Mrs. Tomasa Schuster',7523,8,'2018-09-23');
+INSERT INTO `customers` VALUES ('Leonel Kutch',7665,23,'2018-03-13');
+INSERT INTO `customers` VALUES ('Josephine Runolfsson',7929,21,'2015-11-20');
+INSERT INTO `customers` VALUES ('Amy Veum',8002,14,'2016-10-24');
+INSERT INTO `customers` VALUES ('Mr. Reed Streich',8148,23,'2017-12-01');
+INSERT INTO `customers` VALUES ('Enrico Goldner',8364,23,'2016-09-14');
+INSERT INTO `customers` VALUES ('Jannie Jacobson',8644,13,'2018-09-21');
+INSERT INTO `customers` VALUES ('Telly Herman',9137,14,'2018-05-24');
+INSERT INTO `customers` VALUES ('Robbie Bartell',9813,17,'2018-07-28');
+
 
 
 
@@ -299,10 +306,6 @@ INSERT INTO `billofsale` VALUES('1149','5027','8','53.24','2018-11-13','4101','n
 
 
 
-
-
-
-
 CREATE TABLE `itemgraveyard` (
   `itemid` int(11) NOT NULL,
   `qtymissing` int(11) DEFAULT NULL,
@@ -335,7 +338,6 @@ INSERT INTO `itemgraveyard` VALUES (5390,4,'2017-02-06');
 INSERT INTO `itemgraveyard` VALUES (5404,8,'2014-07-18');
 INSERT INTO `itemgraveyard` VALUES (5713,7,'2017-10-23');
 INSERT INTO `itemgraveyard` VALUES (5935,0,'2015-03-03'); 
-
 
 
 
@@ -666,6 +668,7 @@ INSERT INTO `reviews` VALUES ('980007','2017-08-21','2701','1389','1');
 INSERT INTO `reviews` VALUES ('991394','2015-05-21','9456','8364','0'); 
 
 
+
 CREATE TABLE `archivedItems` (
   `itemid` int(11) NOT NULL,
   `itemname` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -677,3 +680,21 @@ CREATE TABLE `archivedItems` (
 
 
 
+CREATE TRIGGER transactionoccured
+  AFTER INSERT ON billofsale
+  FOR EACH ROW
+  UPDATE items
+  SET    items.qtyinstock = items.qtyinstock - NEW.qtyordered
+  WHERE  itemid = NEW.itemid;
+
+
+
+delimiter //
+CREATE TRIGGER deletebillofsale after DELETE ON billofsale 
+FOR EACH ROW
+BEGIN
+UPDATE items
+SET    qtyinstock = old.qtyordered + qtyinstock
+WHERE  itemid = old.itemid;
+END//
+delimiter ;
